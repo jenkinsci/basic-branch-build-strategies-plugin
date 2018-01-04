@@ -48,7 +48,9 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
 
     /**
      * Our constructor.
-     * @param ignoreTargetOnlyChanges
+     *
+     * @param ignoreTargetOnlyChanges {@code true} to ignore merge revision changes where the only difference is the
+     *                                            target branch revision.
      */
     @DataBoundConstructor
     public ChangeRequestBuildStrategyImpl(boolean ignoreTargetOnlyChanges) {

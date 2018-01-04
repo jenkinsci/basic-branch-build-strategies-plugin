@@ -1,0 +1,8 @@
+== Basic Branch Build Strategies Plugin documentation
+
+image::images/directions.png[]
+
+There is one guide:
+
+User guide::
+If you are using Jenkins and want to understand how to use the basic branch build strategies, you should read link:user.adoc[the user guide].
