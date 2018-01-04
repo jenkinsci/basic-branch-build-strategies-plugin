@@ -243,7 +243,7 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
         public RegexNameFilter(@CheckForNull String regex, boolean caseSensitive) {
             this.regex = StringUtils.defaultIfBlank(regex, "^.*$");
             this.caseSensitive = caseSensitive;
-            pattern = Pattern.compile(regex, caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
+            pattern = Pattern.compile(this.regex, caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
         }
 
         @NonNull
