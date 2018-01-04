@@ -1,0 +1,4 @@
+== User guide
+
+This document provides the user guide to the functionality provided by the Basic Branch Build Strategies plugin.
+

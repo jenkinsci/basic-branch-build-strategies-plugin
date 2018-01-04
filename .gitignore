@@ -1,0 +1,18 @@
+# Maven build files
+target/
+
+# Jenkins plugin development
+work/
+
+# IntelliJ project files
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Eclipse project files
+.settings/
+.classpath
+.project
+.metadata
+.loadpath
