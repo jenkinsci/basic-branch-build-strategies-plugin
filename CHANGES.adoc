@@ -1,5 +1,21 @@
 = Changes
 
-== Version 1.0.0 (unreleased)
+////
+Each version newest first -->
+
+Template:
+----
+== Version X.Y.Z (yyyy-MM-dd)
+
+* details
+----
+
+////
+
+== Version 1.0.1 (unreleased)
+
+* ...
+
+== Version 1.0.0 (2018-01-04)
 
 * Initial release
