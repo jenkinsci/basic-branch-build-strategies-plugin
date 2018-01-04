@@ -12,9 +12,13 @@ Template:
 
 ////
 
-== Version 1.0.1 (unreleased)
+== Version 1.0.2 (unreleased)
 
 * ...
+
+== Version 1.0.1 (2018-01-04)
+
+* https://issues.jenkins-ci.org/browse/JENKINS-48792[JENKINS-48792] A branch build strategy that only builds named branches.
 
 == Version 1.0.0 (2018-01-04)
 
