@@ -63,6 +63,30 @@ public class BranchBuildStrategyImpl extends BranchBuildStrategy {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return BranchBuildStrategyImpl.class.hashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        return obj != null && getClass().equals(obj.getClass());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "BranchBuildStrategyImpl{}";
+    }
+
+    /**
      * Our descriptor.
      */
     @Extension

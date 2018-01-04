@@ -26,6 +26,7 @@ package jenkins.branch.buildstrategies.basic;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
+import hudson.Util;
 import java.util.concurrent.TimeUnit;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
@@ -131,6 +132,47 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
             }
         }
         return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        TagBuildStrategyImpl that = (TagBuildStrategyImpl) o;
+
+        if (atLeastMillis != that.atLeastMillis) {
+            return false;
+        }
+        return atMostMillis == that.atMostMillis;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        int result = (int) (atLeastMillis ^ (atLeastMillis >>> 32));
+        result = 31 * result + (int) (atMostMillis ^ (atMostMillis >>> 32));
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "TagBuildStrategyImpl{" +
+                "atLeast=" + (atLeastMillis >= 0L ? Util.getPastTimeString(atLeastMillis) : "n/a") +
+                ", atMost=" + (atMostMillis >= 0L ? Util.getPastTimeString(atMostMillis) : "n/a")+
+                '}';
     }
 
     /**

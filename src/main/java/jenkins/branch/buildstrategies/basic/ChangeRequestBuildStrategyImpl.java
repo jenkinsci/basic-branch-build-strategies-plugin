@@ -80,6 +80,41 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ChangeRequestBuildStrategyImpl that = (ChangeRequestBuildStrategyImpl) o;
+
+        return ignoreTargetOnlyChanges == that.ignoreTargetOnlyChanges;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return (ignoreTargetOnlyChanges ? 1 : 0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "ChangeRequestBuildStrategyImpl{" +
+                "ignoreTargetOnlyChanges=" + ignoreTargetOnlyChanges +
+                '}';
+    }
+
+    /**
      * Our descriptor.
      */
     @Extension
