@@ -36,6 +36,7 @@ import jenkins.scm.api.SCMSource;
 import jenkins.scm.api.mixin.ChangeRequestSCMHead;
 import jenkins.scm.api.mixin.TagSCMHead;
 import org.apache.commons.lang.StringUtils;
+import org.jenkinsci.Symbol;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.DoNotUse;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -178,6 +179,7 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
     /**
      * Our descriptor.
      */
+    @Symbol("buildTags")
     @Extension
     public static class DescriptorImpl extends BranchBuildStrategyDescriptor {
         /**

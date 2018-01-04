@@ -35,6 +35,7 @@ import jenkins.scm.api.mixin.ChangeRequestCheckoutStrategy;
 import jenkins.scm.api.mixin.ChangeRequestSCMHead;
 import jenkins.scm.api.mixin.ChangeRequestSCMHead2;
 import jenkins.scm.api.mixin.ChangeRequestSCMRevision;
+import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
@@ -119,6 +120,7 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
     /**
      * Our descriptor.
      */
+    @Symbol("buildChangeRequests")
     @Extension
     public static class DescriptorImpl extends BranchBuildStrategyDescriptor {
         /**

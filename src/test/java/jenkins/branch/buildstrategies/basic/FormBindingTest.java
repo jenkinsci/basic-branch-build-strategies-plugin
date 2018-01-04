@@ -26,6 +26,7 @@ package jenkins.branch.buildstrategies.basic;
 import hudson.model.Computer;
 import hudson.model.Executor;
 import hudson.model.TopLevelItem;
+import java.util.Arrays;
 import java.util.Collections;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchSource;
@@ -83,6 +84,32 @@ public class FormBindingTest {
             j.configRoundtrip(prj);
             assertThat(prj.getSources().get(0).getBuildStrategies(),
                     contains((BranchBuildStrategy) new BranchBuildStrategyImpl()));
+        }
+    }
+
+    @Test
+    public void namedBranch() throws Exception {
+        try (MockSCMController c = MockSCMController.create()) {
+            c.createRepository("foo");
+            BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
+            prj.setCriteria(null);
+            BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches(),
+                    new MockSCMDiscoverTags(), new MockSCMDiscoverChangeRequests()));
+            source.setBuildStrategies(Collections.<BranchBuildStrategy>singletonList(new NamedBranchBuildStrategyImpl(
+                    Arrays.asList(new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
+                            new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
+                            new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
+                            new NamedBranchBuildStrategyImpl.WildcardsNameFilter("feature/*", "feature", false)
+                    ))));
+            prj.getSourcesList().add(source);
+            j.configRoundtrip(prj);
+            assertThat(prj.getSources().get(0).getBuildStrategies(),
+                    contains((BranchBuildStrategy) new NamedBranchBuildStrategyImpl(
+                            Arrays.asList(new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
+                                    new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
+                                    new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
+                                    new NamedBranchBuildStrategyImpl.WildcardsNameFilter("feature/*", "feature", false)
+                            ))));
         }
     }
 
