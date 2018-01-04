@@ -32,6 +32,7 @@ import jenkins.scm.api.SCMRevision;
 import jenkins.scm.api.SCMSource;
 import jenkins.scm.api.mixin.ChangeRequestSCMHead;
 import jenkins.scm.api.mixin.TagSCMHead;
+import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
@@ -89,6 +90,7 @@ public class BranchBuildStrategyImpl extends BranchBuildStrategy {
     /**
      * Our descriptor.
      */
+    @Symbol("buildRegularBranches")
     @Extension
     public static class DescriptorImpl extends BranchBuildStrategyDescriptor {
         /**

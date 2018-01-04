@@ -21,6 +21,30 @@ image::images/branches.png[]
 This strategy will build "regular" branches (also known as streams in some source control systems).
 In otherwords, if it is not a change request and if it is not a tag, then it should be built on initial discovery and every time a revision change is detected.
 
+==== Named branches
+
+image::images/named-branches.png[]
+
+This strategy will build "regular" branches (also known as streams in some source control systems) if the name of the branch matches one of an ordered list of match rules.
+
+There name matching rules are an extension point.
+This plugin provides three implementations:
+
+Exact name::
+Matches the branch name exactly without any wildcard or special character substitution.
++
+image::images/named-branches-exact.png[]
+
+Regular expression::
+Matches the branch name against a https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html[Java regular expression].
++
+image::images/named-branches-regex.png[]
+
+Wildcard include/exclude::
+Matches the branch name against pair of simple wildcard style include/exclude rules.
++
+image::images/named-branches-wildcards.png[]
+
 ==== Change requests
 
 image::images/change-requests.png[]
