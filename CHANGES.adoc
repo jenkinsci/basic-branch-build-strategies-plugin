@@ -12,9 +12,13 @@ Template:
 
 ////
 
-== Version 1.0.2 (unreleased)
+== Version 1.1.1 (unreleased)
 
 * ...
+
+== Version 1.1.0 (2018-11-16)
+
+* https://issues.jenkins-ci.org/browse/JENKINS-47859[JENKINS-47859] Implement the migration API from branch-api to migrate the legacy hack to the correct implementation
 
 == Version 1.0.1 (2018-01-04)
 
