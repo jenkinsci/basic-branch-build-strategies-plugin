@@ -14,12 +14,12 @@ import org.kohsuke.accmod.restrictions.NoExternalUse;
 
 @Restricted(NoExternalUse.class)
 @Extension
-public class NoTiggerOrganizationFolderMigration
+public class NoTriggerOrganizationFolderMigration
         extends PropertyMigration.Migrator<OrganizationFolder, NoTriggerOrganizationFolderProperty> {
 
-    private static final Logger LOGGER = Logger.getLogger(NoTiggerOrganizationFolderMigration.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NoTriggerOrganizationFolderMigration.class.getName());
 
-    public NoTiggerOrganizationFolderMigration() {
+    public NoTriggerOrganizationFolderMigration() {
         super(OrganizationFolder.class, NoTriggerOrganizationFolderProperty.class);
     }
 
