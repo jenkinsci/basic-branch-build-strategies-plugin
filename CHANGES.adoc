@@ -16,6 +16,10 @@ Template:
 
 * ...
 
+== Version 1.1.1 (2018-11-17)
+
+* Fix a typo in class naming (class is not exposed outside of the plugin)
+
 == Version 1.1.0 (2018-11-16)
 
 * https://issues.jenkins-ci.org/browse/JENKINS-47859[JENKINS-47859] Implement the migration API from branch-api to migrate the legacy hack to the correct implementation
