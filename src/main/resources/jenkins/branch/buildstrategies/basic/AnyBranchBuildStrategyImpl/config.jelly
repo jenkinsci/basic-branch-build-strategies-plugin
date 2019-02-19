@@ -24,7 +24,7 @@
  -->
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
-  <f:entry field="strategies" title="${%Any Of}">
+  <f:entry field="strategies" title="${%Any of}">
     <f:repeatableHeteroProperty field="strategies" hasHeader="true"/>
   </f:entry>
 </j:jelly>
