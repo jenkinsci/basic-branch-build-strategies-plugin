@@ -138,7 +138,6 @@ public class NoneBranchBuildStrategyImpl extends BranchBuildStrategy {
             return Messages.NoneBranchBuildStrategyImpl_displayName();
         }
     }
-
-
+    
 
 }
