@@ -43,7 +43,7 @@ public class ChangeRequestBuildStrategyImplTest {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
-                    new ChangeRequestBuildStrategyImpl(false).isAutomaticBuild(
+                    new ChangeRequestBuildStrategyImpl(false, false).isAutomaticBuild(
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
@@ -59,7 +59,7 @@ public class ChangeRequestBuildStrategyImplTest {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis());
             assertThat(
-                    new ChangeRequestBuildStrategyImpl(false).isAutomaticBuild(
+                    new ChangeRequestBuildStrategyImpl(false, false).isAutomaticBuild(
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
@@ -76,7 +76,7 @@ public class ChangeRequestBuildStrategyImplTest {
             MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(SCMHeadOrigin.DEFAULT, 1, "master",
                     ChangeRequestCheckoutStrategy.MERGE, true);
             assertThat(
-                    new ChangeRequestBuildStrategyImpl(false).isAutomaticBuild(
+                    new ChangeRequestBuildStrategyImpl(false, false).isAutomaticBuild(
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockChangeRequestSCMRevision(head,
@@ -89,12 +89,33 @@ public class ChangeRequestBuildStrategyImplTest {
     }
 
     @Test
+    public void given__cr_head_ignoring_untrusted_changes_when__trusted_revision__then__isAutomaticBuild_returns_true() throws Exception {
+        try (MockSCMController c = MockSCMController.create()) {
+            MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(SCMHeadOrigin.DEFAULT, 1, "master",
+                    ChangeRequestCheckoutStrategy.MERGE, true);
+            assertThat(
+                    new ChangeRequestBuildStrategyImpl(false, true).isAutomaticBuild(
+                            new MockSCMSource(c, "dummy"),
+                            head,
+                            new MockChangeRequestSCMRevision(head,
+                                    new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
+                            null
+                    ),
+                    is(true)
+            );
+        }
+    }
+
+    // TODO given__cr_head_ignoring_untrusted_changes_when__untrusted_revision__then__isAutomaticBuild_returns_false
+    //  needs an update to SCM API to allow MockSCMController to provide untrusted revisions
+
+    @Test
     public void given__cr_head_ignoring_target_changes__when__first_build__then__isAutomaticBuild_returns_true() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(SCMHeadOrigin.DEFAULT, 1, "master",
                     ChangeRequestCheckoutStrategy.MERGE, true);
             assertThat(
-                    new ChangeRequestBuildStrategyImpl(true).isAutomaticBuild(
+                    new ChangeRequestBuildStrategyImpl(true, false).isAutomaticBuild(
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockChangeRequestSCMRevision(head,
@@ -112,7 +133,7 @@ public class ChangeRequestBuildStrategyImplTest {
             MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(SCMHeadOrigin.DEFAULT, 1, "master",
                     ChangeRequestCheckoutStrategy.MERGE, true);
             assertThat(
-                    new ChangeRequestBuildStrategyImpl(true).isAutomaticBuild(
+                    new ChangeRequestBuildStrategyImpl(true, false).isAutomaticBuild(
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockChangeRequestSCMRevision(head,
@@ -131,7 +152,7 @@ public class ChangeRequestBuildStrategyImplTest {
             MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(SCMHeadOrigin.DEFAULT, 1, "master",
                     ChangeRequestCheckoutStrategy.MERGE, true);
             assertThat(
-                    new ChangeRequestBuildStrategyImpl(true).isAutomaticBuild(
+                    new ChangeRequestBuildStrategyImpl(true, false).isAutomaticBuild(
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockChangeRequestSCMRevision(head,
@@ -150,7 +171,7 @@ public class ChangeRequestBuildStrategyImplTest {
             MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(SCMHeadOrigin.DEFAULT, 1, "master",
                     ChangeRequestCheckoutStrategy.MERGE, true);
             assertThat(
-                    new ChangeRequestBuildStrategyImpl(true).isAutomaticBuild(
+                    new ChangeRequestBuildStrategyImpl(true, false).isAutomaticBuild(
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockChangeRequestSCMRevision(head,
