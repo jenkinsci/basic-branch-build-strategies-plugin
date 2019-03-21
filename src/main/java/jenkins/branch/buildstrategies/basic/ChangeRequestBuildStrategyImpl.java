@@ -26,9 +26,12 @@ package jenkins.branch.buildstrategies.basic;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
+import hudson.Functions;
+import hudson.model.TaskListener;
 import hudson.util.LogTaskListener;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
@@ -38,6 +41,8 @@ import jenkins.scm.api.SCMSource;
 import jenkins.scm.api.mixin.ChangeRequestSCMHead;
 import jenkins.scm.api.mixin.ChangeRequestSCMRevision;
 import org.jenkinsci.Symbol;
+import org.kohsuke.accmod.Restricted;
+import org.kohsuke.accmod.restrictions.ProtectedExternally;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
@@ -96,6 +101,16 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     @CheckForNull SCMRevision prevRevision) {
+        return isAutomaticBuild(source, head, currRevision, prevRevision, new LogTaskListener(LOGGER, Level.INFO));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    // TODO @Override
+    @Restricted(ProtectedExternally.class)
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    @CheckForNull SCMRevision prevRevision, TaskListener listener) {
         if (!(head instanceof ChangeRequestSCMHead)) {
             return false;
         }
@@ -108,14 +123,15 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
             }
         }
         try {
-            if (ignoreUntrustedChanges && !currRevision.equals(source.getTrustedRevision(
-                    currRevision,
-                    new LogTaskListener(LOGGER, Level.INFO))
-            )) {
+            if (ignoreUntrustedChanges && !currRevision.equals(source.getTrustedRevision(currRevision, listener))) {
                 return false;
             }
         } catch (IOException | InterruptedException e) {
-            LOGGER.log(Level.WARNING, "Could not determine trust status, assuming untrusted", e);
+            LogRecord lr = new LogRecord(Level.WARNING,
+                    "Could not determine trust status for revision {0} of {1}, assuming untrusted");
+            lr.setParameters(new Object[] {currRevision, head});
+            lr.setThrown(e);
+            Functions.printLogRecord(lr);
             return false;
         }
         return true;

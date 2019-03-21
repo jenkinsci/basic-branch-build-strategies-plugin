@@ -23,10 +23,14 @@
  */
 package jenkins.branch.buildstrategies.basic;
 
+import java.io.IOException;
 import jenkins.scm.api.SCMHeadOrigin;
 import jenkins.scm.api.mixin.ChangeRequestCheckoutStrategy;
+import jenkins.scm.impl.mock.MockChangeRequestFlags;
 import jenkins.scm.impl.mock.MockChangeRequestSCMHead;
 import jenkins.scm.impl.mock.MockChangeRequestSCMRevision;
+import jenkins.scm.impl.mock.MockFailure;
+import jenkins.scm.impl.mock.MockRepositoryFlags;
 import jenkins.scm.impl.mock.MockSCMController;
 import jenkins.scm.impl.mock.MockSCMHead;
 import jenkins.scm.impl.mock.MockSCMRevision;
@@ -91,7 +95,10 @@ public class ChangeRequestBuildStrategyImplTest {
     @Test
     public void given__cr_head_ignoring_untrusted_changes_when__trusted_revision__then__isAutomaticBuild_returns_true() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
-            MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(SCMHeadOrigin.DEFAULT, 1, "master",
+            c.createRepository("dummy", MockRepositoryFlags.TRUST_AWARE);
+            Integer crNum = c.openChangeRequest("dummy", "master");
+
+            MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(SCMHeadOrigin.DEFAULT, crNum, "master",
                     ChangeRequestCheckoutStrategy.MERGE, true);
             assertThat(
                     new ChangeRequestBuildStrategyImpl(false, true).isAutomaticBuild(
@@ -106,8 +113,55 @@ public class ChangeRequestBuildStrategyImplTest {
         }
     }
 
-    // TODO given__cr_head_ignoring_untrusted_changes_when__untrusted_revision__then__isAutomaticBuild_returns_false
-    //  needs an update to SCM API to allow MockSCMController to provide untrusted revisions
+    @Test
+    public void given__cr_head_ignoring_untrusted_changes_when__trusted_unavailable__then__isAutomaticBuild_returns_false() throws Exception {
+        try (MockSCMController c = MockSCMController.create()) {
+            c.createRepository("dummy", MockRepositoryFlags.TRUST_AWARE);
+            Integer crNum = c.openChangeRequest("dummy", "master");
+
+            MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(SCMHeadOrigin.DEFAULT, crNum, "master",
+                    ChangeRequestCheckoutStrategy.MERGE, true);
+
+            c.addFault(new MockFailure() {
+                @Override
+                public void check(String repository, String branchOrCR, String revision, boolean actions)
+                        throws IOException {
+                    throw new IOException("Fail");
+                }
+            });
+            assertThat(
+                    new ChangeRequestBuildStrategyImpl(false, true).isAutomaticBuild(
+                            new MockSCMSource(c, "dummy"),
+                            head,
+                            new MockChangeRequestSCMRevision(head,
+                                    new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
+                            null
+                    ),
+                    is(false)
+            );
+        }
+    }
+
+    @Test
+    public void given__cr_head_ignoring_untrusted_changes_when__untrusted_revision__then__isAutomaticBuild_returns_false() throws Exception {
+        try (MockSCMController c = MockSCMController.create()) {
+            c.createRepository("dummy", MockRepositoryFlags.TRUST_AWARE);
+            Integer crNum = c.openChangeRequest("dummy", "master", MockChangeRequestFlags.UNTRUSTED);
+
+            MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(SCMHeadOrigin.DEFAULT, crNum, "master",
+                    ChangeRequestCheckoutStrategy.MERGE, true);
+            assertThat(
+                    new ChangeRequestBuildStrategyImpl(false, true).isAutomaticBuild(
+                            new MockSCMSource(c, "dummy"),
+                            head,
+                            new MockChangeRequestSCMRevision(head,
+                                    new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
+                            null
+                    ),
+                    is(false)
+            );
+        }
+    }
 
     @Test
     public void given__cr_head_ignoring_target_changes__when__first_build__then__isAutomaticBuild_returns_true() throws Exception {
