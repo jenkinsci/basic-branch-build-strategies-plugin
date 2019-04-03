@@ -21,12 +21,17 @@
  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  ~ THE SOFTWARE.
  -->
-<?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
-  <f:entry field="ignoreTargetOnlyChanges">
-    <f:checkbox title="${%Ignore rebuilding merge branches when only the target branch changed}"/>
-  </f:entry>
-  <f:entry field="ignoreUntrustedChanges">
-    <f:checkbox title="${%Ignore change requests flagged as originating from an untrusted source}"/>
-  </f:entry>
-</j:jelly>
+<div>
+    <p>
+        Some sources can permit change request / pull request from external entities. As part of the configuration of
+        such sources you can configure how to determine if a change request / pull request originates from a trusted
+        or untrusted user.
+    </p>
+    <p>
+        When enabled, this option will only automatically build a change request / pull request if it originate
+        from a trusted user (according to your configuration of the source)
+    </p>
+    <p>
+        <strong>WARNING:</strong> this option is only as good as your configuration of the trust policy in the source.
+    </p>
+</div>

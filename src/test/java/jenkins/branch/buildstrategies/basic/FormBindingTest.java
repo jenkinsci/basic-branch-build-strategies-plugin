@@ -122,11 +122,11 @@ public class FormBindingTest {
             BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches(),
                     new MockSCMDiscoverTags(), new MockSCMDiscoverChangeRequests()));
             source.setBuildStrategies(
-                    Collections.<BranchBuildStrategy>singletonList(new ChangeRequestBuildStrategyImpl(false)));
+                    Collections.<BranchBuildStrategy>singletonList(new ChangeRequestBuildStrategyImpl(false, false)));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
             assertThat(prj.getSources().get(0).getBuildStrategies(),
-                    contains((BranchBuildStrategy) new ChangeRequestBuildStrategyImpl(false)));
+                    contains((BranchBuildStrategy) new ChangeRequestBuildStrategyImpl(false, false)));
         }
     }
 
@@ -139,11 +139,11 @@ public class FormBindingTest {
             BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches(),
                     new MockSCMDiscoverTags(), new MockSCMDiscoverChangeRequests()));
             source.setBuildStrategies(
-                    Collections.<BranchBuildStrategy>singletonList(new ChangeRequestBuildStrategyImpl(true)));
+                    Collections.<BranchBuildStrategy>singletonList(new ChangeRequestBuildStrategyImpl(true, false)));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
             assertThat(prj.getSources().get(0).getBuildStrategies(),
-                    contains((BranchBuildStrategy) new ChangeRequestBuildStrategyImpl(true)));
+                    contains((BranchBuildStrategy) new ChangeRequestBuildStrategyImpl(true, false)));
         }
     }
 

@@ -12,9 +12,14 @@ Template:
 
 ////
 
-== Version 1.1.1 (unreleased)
+== Version 1.2.1 (unreleased)
 
 * ...
+
+== Version 1.2.0 (2019-03-21)
+
+* Add `Any`, `All` and `None` strategies link:https://github.com/jenkinsci/basic-branch-build-strategies-plugin/pull/3[PR-3]
+* Add `ignoreUntrustedChanges` to Chnage request build strategy
 
 == Version 1.1.1 (2018-11-17)
 
