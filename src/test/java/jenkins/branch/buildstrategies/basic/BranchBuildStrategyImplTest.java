@@ -47,6 +47,7 @@ public class BranchBuildStrategyImplTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             null
                     ),
                     is(true)
@@ -63,6 +64,7 @@ public class BranchBuildStrategyImplTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             null
                     ),
                     is(false)
@@ -81,6 +83,7 @@ public class BranchBuildStrategyImplTest {
                             head,
                             new MockChangeRequestSCMRevision(head,
                                     new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
+                            null,
                             null
                     ),
                     is(false)

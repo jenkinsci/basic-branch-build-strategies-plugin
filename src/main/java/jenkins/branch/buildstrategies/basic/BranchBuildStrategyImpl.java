@@ -25,6 +25,7 @@ package jenkins.branch.buildstrategies.basic;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
+import hudson.model.TaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -53,7 +54,7 @@ public class BranchBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision prevRevision) {
+                                    SCMRevision prevRevision, TaskListener taskListener) {
         if (head instanceof ChangeRequestSCMHead) {
             return false;
         }

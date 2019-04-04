@@ -94,10 +94,10 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
         return ignoreUntrustedChanges;
     }
 
-    // TODO change overload to one that has the listener after branch-api is updated to enable listener pass-through
     /**
      * {@inheritDoc}
      */
+    @Deprecated
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     @CheckForNull SCMRevision prevRevision) {
@@ -107,8 +107,8 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
     /**
      * {@inheritDoc}
      */
-    // TODO @Override
     @Restricted(ProtectedExternally.class)
+    @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     @CheckForNull SCMRevision prevRevision, TaskListener listener) {
         if (!(head instanceof ChangeRequestSCMHead)) {

@@ -66,6 +66,7 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             null
                     ),
                     is(false)
@@ -82,7 +83,8 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
-                            new MockSCMRevision(head, "dummy")
+                            new MockSCMRevision(head, "dummy"),
+                            null
                     ),
                     is(true)
             );
@@ -90,10 +92,10 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
     }
 
     @Test
-    public void in__first__branch__indexing__isAutomaticBuild__then__returns__true() throws Exception {
+    public void if__first__branch__indexing__isAutomaticBuild__then__returns__true() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
-            BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
+            BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "my-project");
             prj.setCriteria(null);
             BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches()));
             source.setBuildStrategies(Collections.<BranchBuildStrategy>singletonList(new SkipInitialBuildOnFirstBranchIndexing()));
@@ -119,7 +121,7 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
     public void if__skipInitialBuildOnFirstBranchIndexing__is__disabled__first__branch__indexing__triggers__the__build() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
-            BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
+            BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "my-project");
             prj.setCriteria(null);
             prj.getSourcesList().add(new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches())));
             fire(new MockSCMHeadEvent(SCMEvent.Type.CREATED, c, "foo", "master", c.getRevision("foo", "master")));

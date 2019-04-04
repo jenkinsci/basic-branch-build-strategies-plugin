@@ -25,6 +25,7 @@ package jenkins.branch.buildstrategies.basic;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
+import hudson.model.TaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -45,7 +46,7 @@ public class SkipInitialBuildOnFirstBranchIndexing extends BranchBuildStrategy {
     }
 
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource scmSource, @NonNull SCMHead scmHead, @NonNull SCMRevision currRevision, SCMRevision prevRevision) {
+    public boolean isAutomaticBuild(@NonNull SCMSource scmSource, @NonNull SCMHead scmHead, @NonNull SCMRevision currRevision, SCMRevision prevRevision, TaskListener taskListener) {
         if (prevRevision != null) {
             return true;
         }

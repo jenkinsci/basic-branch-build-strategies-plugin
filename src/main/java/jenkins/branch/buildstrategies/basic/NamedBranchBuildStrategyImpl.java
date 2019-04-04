@@ -29,6 +29,7 @@ import hudson.Extension;
 import hudson.Util;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
+import hudson.model.TaskListener;
 import hudson.util.FormValidation;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,7 +78,7 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision prevRevision) {
+                                    SCMRevision prevRevision, TaskListener taskListener) {
         if (head instanceof ChangeRequestSCMHead) {
             return false;
         }
