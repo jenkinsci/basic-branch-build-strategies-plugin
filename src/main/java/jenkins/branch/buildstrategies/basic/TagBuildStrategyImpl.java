@@ -28,6 +28,8 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
 import java.util.concurrent.TimeUnit;
+
+import hudson.model.TaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -114,7 +116,7 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision prevRevision) {
+                                    @CheckForNull SCMRevision prevRevision, TaskListener taskListener) {
         if (!(head instanceof TagSCMHead)) {
             return false;
         }

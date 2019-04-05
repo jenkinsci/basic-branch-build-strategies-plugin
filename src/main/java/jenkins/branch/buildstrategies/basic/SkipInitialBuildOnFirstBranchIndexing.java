@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2018, CloudBees, Inc.
+ * Copyright (c) 2019, CloudBees, Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,67 +31,31 @@ import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.SCMRevision;
 import jenkins.scm.api.SCMSource;
-import jenkins.scm.api.mixin.ChangeRequestSCMHead;
-import jenkins.scm.api.mixin.TagSCMHead;
-import org.jenkinsci.Symbol;
+import org.kohsuke.accmod.Restricted;
+import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-/**
- * A {@link BranchBuildStrategy} that builds things that are neither tags nor change requests.
- *
- * @since 1.0.0
- */
-public class BranchBuildStrategyImpl extends BranchBuildStrategy {
-    /**
-     * Our constructor.
-     */
+
+@Restricted(NoExternalUse.class)
+@Extension
+public class SkipInitialBuildOnFirstBranchIndexing extends BranchBuildStrategy {
+
     @DataBoundConstructor
-    public BranchBuildStrategyImpl() {
+    public SkipInitialBuildOnFirstBranchIndexing() {
+
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision prevRevision, TaskListener taskListener) {
-        if (head instanceof ChangeRequestSCMHead) {
-            return false;
+    public boolean isAutomaticBuild(@NonNull SCMSource scmSource, @NonNull SCMHead scmHead, @NonNull SCMRevision currRevision, SCMRevision prevRevision, TaskListener taskListener) {
+        if (prevRevision != null) {
+            return true;
         }
-        if (head instanceof TagSCMHead) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return BranchBuildStrategyImpl.class.hashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object obj) {
-        return obj != null && getClass().equals(obj.getClass());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "BranchBuildStrategyImpl{}";
+        return false;
     }
 
     /**
      * Our descriptor.
      */
-    @Symbol("buildRegularBranches")
     @Extension
     public static class DescriptorImpl extends BranchBuildStrategyDescriptor {
         /**
@@ -100,7 +64,9 @@ public class BranchBuildStrategyImpl extends BranchBuildStrategy {
         @NonNull
         @Override
         public String getDisplayName() {
-            return Messages.BranchBuildStrategyImpl_displayName();
+            return Messages.SkipInitialBuildOnFirstBranchIndexing_displayName();
         }
+
     }
+
 }

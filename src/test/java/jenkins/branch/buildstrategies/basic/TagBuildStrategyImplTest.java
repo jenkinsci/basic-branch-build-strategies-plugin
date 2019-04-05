@@ -48,6 +48,7 @@ public class TagBuildStrategyImplTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             null
                     ),
                     is(false)
@@ -64,6 +65,7 @@ public class TagBuildStrategyImplTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             null
                     ),
                     is(true)
@@ -80,6 +82,7 @@ public class TagBuildStrategyImplTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             null
                     ),
                     is(true)
@@ -96,6 +99,7 @@ public class TagBuildStrategyImplTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             null
                     ),
                     is(false)
@@ -112,6 +116,7 @@ public class TagBuildStrategyImplTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             null
                     ),
                     is(false)
@@ -128,6 +133,7 @@ public class TagBuildStrategyImplTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             null
                     ),
                     is(true)
@@ -145,6 +151,7 @@ public class TagBuildStrategyImplTest {
                                 new MockSCMSource(c, "dummy"),
                                 head,
                                 new MockSCMRevision(head, "dummy"),
+                                null,
                                 null
                         ),
                         is(false)
@@ -162,6 +169,7 @@ public class TagBuildStrategyImplTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             null
                     ),
                     is(false)
@@ -178,6 +186,7 @@ public class TagBuildStrategyImplTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             null
                     ),
                     is(true)
@@ -194,6 +203,7 @@ public class TagBuildStrategyImplTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             null
                     ),
                     is(false)
@@ -212,6 +222,7 @@ public class TagBuildStrategyImplTest {
                             head,
                             new MockChangeRequestSCMRevision(head,
                                     new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
+                            null,
                             null
                     ),
                     is(false)

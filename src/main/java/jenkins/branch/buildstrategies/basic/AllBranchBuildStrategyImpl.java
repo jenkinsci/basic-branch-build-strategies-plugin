@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import hudson.model.TaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -66,7 +67,7 @@ public class AllBranchBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision prevRevision) {
+                                    SCMRevision prevRevision, TaskListener taskListener) {
 
         if(strategies.isEmpty()){
             return false;
@@ -77,7 +78,8 @@ public class AllBranchBuildStrategyImpl extends BranchBuildStrategy {
                 source,
                 head,
                 currRevision,
-                prevRevision
+                prevRevision,
+                taskListener
             )){
                 return false;
             };
