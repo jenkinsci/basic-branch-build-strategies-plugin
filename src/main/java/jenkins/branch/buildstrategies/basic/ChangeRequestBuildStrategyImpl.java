@@ -28,7 +28,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Functions;
 import hudson.model.TaskListener;
-import hudson.util.LogTaskListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -44,8 +43,6 @@ import org.jenkinsci.Symbol;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.ProtectedExternally;
 import org.kohsuke.stapler.DataBoundConstructor;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * A {@link BranchBuildStrategy} that builds change requests.
@@ -103,7 +100,7 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     @CheckForNull SCMRevision prevRevision) {
-        return isAutomaticBuild(source, head, currRevision, prevRevision, new LogTaskListener(LOGGER, Level.INFO));
+        return isAutomaticBuild(source, head, currRevision, prevRevision, null);
     }
 
     /**

@@ -31,7 +31,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import hudson.model.TaskListener;
-import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -44,8 +43,6 @@ import org.jenkinsci.Symbol;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.DoNotUse;
 import org.kohsuke.stapler.DataBoundConstructor;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * A {@link BranchBuildStrategy} that builds tags.
@@ -122,7 +119,7 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     SCMRevision prevRevision) {
-        return isAutomaticBuild(source, head, currRevision, prevRevision, new LogTaskListener(LOGGER, Level.INFO));
+        return isAutomaticBuild(source, head, currRevision, prevRevision, null);
     }
 
     /**
