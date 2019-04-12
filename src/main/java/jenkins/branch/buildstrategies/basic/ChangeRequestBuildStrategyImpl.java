@@ -45,6 +45,8 @@ import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.ProtectedExternally;
 import org.kohsuke.stapler.DataBoundConstructor;
 
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+
 /**
  * A {@link BranchBuildStrategy} that builds change requests.
  *
@@ -108,9 +110,43 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
      * {@inheritDoc}
      */
     @Restricted(ProtectedExternally.class)
+    @Deprecated
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     @CheckForNull SCMRevision prevRevision, TaskListener listener) {
+        if (!(head instanceof ChangeRequestSCMHead)) {
+            return false;
+        }
+        if (ignoreTargetOnlyChanges
+                && currRevision instanceof ChangeRequestSCMRevision
+                && prevRevision instanceof ChangeRequestSCMRevision) {
+            ChangeRequestSCMRevision<?> curr = (ChangeRequestSCMRevision<?>) currRevision;
+            if (curr.isMerge() && curr.equivalent((ChangeRequestSCMRevision<?>) prevRevision)) {
+                return false;
+            }
+        }
+        try {
+            if (ignoreUntrustedChanges && !currRevision.equals(source.getTrustedRevision(currRevision, listener))) {
+                return false;
+            }
+        } catch (IOException | InterruptedException e) {
+            LogRecord lr = new LogRecord(Level.WARNING,
+                    "Could not determine trust status for revision {0} of {1}, assuming untrusted");
+            lr.setParameters(new Object[] {currRevision, head});
+            lr.setThrown(e);
+            Functions.printLogRecord(lr);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Restricted(ProtectedExternally.class)
+    @Override
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    @CheckForNull SCMRevision prevRevision, TaskListener listener, SCMRevision lastSeenRevision) {
         if (!(head instanceof ChangeRequestSCMHead)) {
             return false;
         }

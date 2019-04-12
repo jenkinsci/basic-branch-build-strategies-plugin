@@ -34,9 +34,12 @@ import hudson.util.FormValidation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.annotation.Nonnull;
+
+import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -50,6 +53,8 @@ import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * A {@link BranchBuildStrategy} that builds branches with specific names.
@@ -76,9 +81,29 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
     /**
      * {@inheritDoc}
      */
+    @Deprecated
+    @Override
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    SCMRevision prevRevision) {
+        return isAutomaticBuild(source, head, currRevision, prevRevision, new LogTaskListener(LOGGER, Level.INFO));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Deprecated
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     SCMRevision prevRevision, TaskListener taskListener) {
+        return isAutomaticBuild(source, head, currRevision, prevRevision, taskListener, null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    SCMRevision prevRevision, TaskListener taskListener, SCMRevision lastSeenRevision) {
         if (head instanceof ChangeRequestSCMHead) {
             return false;
         }

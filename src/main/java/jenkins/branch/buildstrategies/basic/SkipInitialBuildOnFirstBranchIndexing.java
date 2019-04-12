@@ -46,8 +46,8 @@ public class SkipInitialBuildOnFirstBranchIndexing extends BranchBuildStrategy {
     }
 
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource scmSource, @NonNull SCMHead scmHead, @NonNull SCMRevision currRevision, SCMRevision prevRevision, TaskListener taskListener) {
-        if (prevRevision != null) {
+    public boolean isAutomaticBuild(@NonNull SCMSource scmSource, @NonNull SCMHead scmHead, @NonNull SCMRevision currRevision, SCMRevision prevRevision, TaskListener taskListener, SCMRevision lastSeenRevision) {
+        if (lastSeenRevision != null) {
             return true;
         }
         return false;

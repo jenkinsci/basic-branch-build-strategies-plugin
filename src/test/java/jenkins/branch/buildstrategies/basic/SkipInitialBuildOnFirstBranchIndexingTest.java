@@ -67,6 +67,7 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
                             head,
                             new MockSCMRevision(head, "dummy"),
                             null,
+                            null,
                             null
                     ),
                     is(false)
@@ -84,6 +85,7 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
                             head,
                             new MockSCMRevision(head, "dummy"),
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             null
                     ),
                     is(true)

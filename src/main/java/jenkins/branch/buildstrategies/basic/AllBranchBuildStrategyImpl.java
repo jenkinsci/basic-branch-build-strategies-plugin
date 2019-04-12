@@ -30,8 +30,10 @@ import hudson.Util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 
 import hudson.model.TaskListener;
+import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -39,6 +41,8 @@ import jenkins.scm.api.SCMRevision;
 import jenkins.scm.api.SCMSource;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  * A {@link BranchBuildStrategy} that builds branches based on the results of all sub strategies matching.
@@ -65,9 +69,27 @@ public class AllBranchBuildStrategyImpl extends BranchBuildStrategy {
     /**
      * {@inheritDoc}
      */
-    @Override
+    @Deprecated
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    SCMRevision prevRevision) {
+        return isAutomaticBuild(source,head, currRevision, prevRevision, new LogTaskListener(LOGGER, Level.INFO));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Deprecated
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     SCMRevision prevRevision, TaskListener taskListener) {
+        return isAutomaticBuild(source,head, currRevision, prevRevision,  taskListener, null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    SCMRevision prevRevision, TaskListener taskListener, SCMRevision lastSeenRevision) {
 
         if(strategies.isEmpty()){
             return false;
@@ -79,7 +101,8 @@ public class AllBranchBuildStrategyImpl extends BranchBuildStrategy {
                 head,
                 currRevision,
                 prevRevision,
-                taskListener
+                taskListener,
+                lastSeenRevision
             )){
                 return false;
             };
