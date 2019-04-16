@@ -74,7 +74,7 @@ public class AllBranchBuildStrategyImpl extends BranchBuildStrategy {
         }
 
         for (BranchBuildStrategy strategy: strategies) {
-            if(!strategy.isAutomaticBuild(
+            if(!strategy.automaticBuild(
                 source,
                 head,
                 currRevision,
