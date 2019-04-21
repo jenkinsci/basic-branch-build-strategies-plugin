@@ -103,6 +103,7 @@ public class NoneBranchBuildStrategyImpl extends BranchBuildStrategy {
             )){
                 return false;
             };
+
         }
         return true;
     }

@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.annotation.Nonnull;
-
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;

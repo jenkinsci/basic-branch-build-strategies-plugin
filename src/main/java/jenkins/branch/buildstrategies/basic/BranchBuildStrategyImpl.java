@@ -36,7 +36,6 @@ import jenkins.scm.api.mixin.TagSCMHead;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-
 /**
  * A {@link BranchBuildStrategy} that builds things that are neither tags nor change requests.
  *

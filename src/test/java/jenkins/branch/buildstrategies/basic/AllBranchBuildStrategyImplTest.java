@@ -55,7 +55,7 @@ public class AllBranchBuildStrategyImplTest {
                     new MockSCMRevision(head, "dummy"),
                     null,
                     null,
-                        null
+                    null
                 ),
                 is(false)
             );
@@ -105,8 +105,8 @@ public class AllBranchBuildStrategyImplTest {
                     head,
                     new MockSCMRevision(head, "dummy"),
                     null,
-                        null,
-                        null
+                    null,
+                    null
                 ),
                 is(false)
             );
@@ -132,7 +132,7 @@ public class AllBranchBuildStrategyImplTest {
                     new MockSCMRevision(head, "dummy"),
                     null,
                     null,
-                        null
+                    null
                 ),
                 is(false)
             );
