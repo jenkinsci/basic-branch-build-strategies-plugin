@@ -28,7 +28,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 import hudson.model.TaskListener;
 import jenkins.branch.BranchBuildStrategy;
@@ -36,7 +35,6 @@ import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.SCMRevision;
 import jenkins.scm.api.SCMSource;
-import jenkins.scm.api.mixin.ChangeRequestSCMHead;
 import jenkins.scm.api.mixin.TagSCMHead;
 import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.Symbol;
@@ -129,7 +127,7 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     SCMRevision prevRevision, TaskListener taskListener) {
-        return isAutomaticBuild(source, head, currRevision, prevRevision, taskListener, null);
+        return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
     }
 
     /**
@@ -137,7 +135,7 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision prevRevision, TaskListener taskListener, SCMRevision lastSeenRevision) {
+                                    SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
         if (!(head instanceof TagSCMHead)) {
             return false;
         }

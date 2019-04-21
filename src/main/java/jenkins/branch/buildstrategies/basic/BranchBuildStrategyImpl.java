@@ -36,7 +36,6 @@ import jenkins.scm.api.mixin.TagSCMHead;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-import java.util.logging.Level;
 
 /**
  * A {@link BranchBuildStrategy} that builds things that are neither tags nor change requests.
@@ -68,7 +67,7 @@ public class BranchBuildStrategyImpl extends BranchBuildStrategy {
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     SCMRevision prevRevision, TaskListener taskListener) {
-        return isAutomaticBuild(source, head, currRevision, prevRevision, taskListener, null);
+        return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
     }
 
     /**
@@ -76,7 +75,7 @@ public class BranchBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision prevRevision, TaskListener taskListener, SCMRevision lastSeenRevision) {
+                                    SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
         if (head instanceof ChangeRequestSCMHead) {
             return false;
         }

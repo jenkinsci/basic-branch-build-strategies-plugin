@@ -34,7 +34,6 @@ import hudson.util.FormValidation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.annotation.Nonnull;
@@ -92,7 +91,7 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     SCMRevision prevRevision, TaskListener taskListener) {
-        return isAutomaticBuild(source, head, currRevision, prevRevision, taskListener, null);
+        return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
     }
 
     /**
@@ -100,7 +99,7 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision prevRevision, TaskListener taskListener, SCMRevision lastSeenRevision) {
+                                    SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
         if (head instanceof ChangeRequestSCMHead) {
             return false;
         }

@@ -38,7 +38,6 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * A {@link BranchBuildStrategy} that builds branches based on the results of any sub strategy matching.
@@ -79,7 +78,7 @@ public class AnyBranchBuildStrategyImpl extends BranchBuildStrategy {
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     SCMRevision prevRevision, TaskListener taskListener) {
-        return isAutomaticBuild(source, head, currRevision, prevRevision, taskListener, null);
+        return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
     }
 
     /**
@@ -87,7 +86,7 @@ public class AnyBranchBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision prevRevision, TaskListener taskListener, SCMRevision lastSeenRevision) {
+                                    SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
 
         if(strategies.isEmpty()){
             return false;
@@ -98,9 +97,9 @@ public class AnyBranchBuildStrategyImpl extends BranchBuildStrategy {
                 source,
                 head,
                 currRevision,
-                prevRevision,
-                taskListener,
-                lastSeenRevision
+                lastBuiltRevision,
+                lastSeenRevision,
+                taskListener
             )){
                 return true;
             };
