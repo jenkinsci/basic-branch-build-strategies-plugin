@@ -34,9 +34,13 @@ import hudson.util.FormValidation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.annotation.Nonnull;
+
+import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -80,7 +84,7 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     SCMRevision prevRevision) {
-        return isAutomaticBuild(source, head, currRevision, prevRevision, null);
+        return isAutomaticBuild(source, head, currRevision, prevRevision, new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
     }
 
     /**

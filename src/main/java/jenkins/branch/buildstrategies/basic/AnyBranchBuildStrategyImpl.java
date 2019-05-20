@@ -27,6 +27,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
 import hudson.model.TaskListener;
+import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -38,6 +39,8 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A {@link BranchBuildStrategy} that builds branches based on the results of any sub strategy matching.
@@ -68,7 +71,7 @@ public class AnyBranchBuildStrategyImpl extends BranchBuildStrategy {
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     SCMRevision prevRevision) {
-        return isAutomaticBuild(source, head, currRevision, prevRevision, null);
+        return isAutomaticBuild(source, head, currRevision, prevRevision, new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
     }
 
     /**

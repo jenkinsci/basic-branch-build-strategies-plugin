@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+
+import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -100,7 +102,7 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     @CheckForNull SCMRevision prevRevision) {
-        return isAutomaticBuild(source, head, currRevision, prevRevision, null);
+        return isAutomaticBuild(source, head, currRevision, prevRevision, new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
     }
 
     /**
