@@ -43,6 +43,8 @@ import jenkins.scm.api.SCMSource;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 
+import javax.annotation.CheckForNull;
+
 /**
  * A {@link BranchBuildStrategy} that builds branches based on the results of all sub strategies matching.
  *
@@ -70,7 +72,7 @@ public class AllBranchBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Deprecated
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision prevRevision) {
+                                    @CheckForNull SCMRevision prevRevision) {
         return isAutomaticBuild(source,head, currRevision, prevRevision, new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
     }
 
@@ -79,7 +81,7 @@ public class AllBranchBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Deprecated
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision prevRevision, TaskListener taskListener) {
+                                    @CheckForNull SCMRevision prevRevision, @NonNull TaskListener taskListener) {
         return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
     }
 
@@ -88,7 +90,7 @@ public class AllBranchBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
+                                    @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull TaskListener taskListener) {
 
         if(strategies.isEmpty()){
             return false;

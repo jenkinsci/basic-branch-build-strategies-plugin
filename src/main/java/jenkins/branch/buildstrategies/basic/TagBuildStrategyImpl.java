@@ -120,7 +120,7 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
     @Deprecated
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision prevRevision) {
+                                    @CheckForNull SCMRevision prevRevision) {
         return isAutomaticBuild(source, head, currRevision, prevRevision, new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
     }
 
@@ -130,7 +130,7 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
     @Deprecated
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision prevRevision, TaskListener taskListener) {
+                                    @CheckForNull SCMRevision prevRevision, @NonNull  TaskListener taskListener) {
         return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
     }
 
@@ -139,7 +139,7 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
+                                    @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull  TaskListener taskListener) {
         if (!(head instanceof TagSCMHead)) {
             return false;
         }

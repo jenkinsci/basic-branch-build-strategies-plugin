@@ -112,7 +112,7 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
     @Deprecated
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision prevRevision, TaskListener taskListener) {
+                                    @CheckForNull SCMRevision prevRevision, @NonNull TaskListener taskListener) {
         return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
     }
 
@@ -122,7 +122,7 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
     @Restricted(ProtectedExternally.class)
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener listener) {
+                                    @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull TaskListener listener) {
         if (!(head instanceof ChangeRequestSCMHead)) {
             return false;
         }
