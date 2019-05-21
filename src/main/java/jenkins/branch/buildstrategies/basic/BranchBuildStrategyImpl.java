@@ -26,6 +26,7 @@ package jenkins.branch.buildstrategies.basic;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.model.TaskListener;
+import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -35,6 +36,10 @@ import jenkins.scm.api.mixin.ChangeRequestSCMHead;
 import jenkins.scm.api.mixin.TagSCMHead;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
+
+import javax.annotation.CheckForNull;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A {@link BranchBuildStrategy} that builds things that are neither tags nor change requests.
@@ -52,9 +57,29 @@ public class BranchBuildStrategyImpl extends BranchBuildStrategy {
     /**
      * {@inheritDoc}
      */
+    @Deprecated
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision prevRevision, TaskListener taskListener) {
+                                    @CheckForNull SCMRevision prevRevision) {
+        return isAutomaticBuild(source, head, currRevision, prevRevision, new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Deprecated
+    @Override
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    @CheckForNull SCMRevision prevRevision, @NonNull TaskListener taskListener) {
+        return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull TaskListener taskListener) {
         if (head instanceof ChangeRequestSCMHead) {
             return false;
         }

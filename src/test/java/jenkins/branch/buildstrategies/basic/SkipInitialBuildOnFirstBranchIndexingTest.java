@@ -58,7 +58,7 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
     public static JenkinsRule j = new JenkinsRule();
 
     @Test
-    public void given__no__scm__prev_revision__isAutomaticBuild__then__returns_false() throws Exception {
+    public void given__no__scm__lastSeenRevision__isAutomaticBuild__then__returns_false() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
@@ -66,6 +66,7 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             null,
                             null
                     ),
@@ -75,7 +76,7 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
     }
 
     @Test
-    public void given__scm__prev_revision__isAutomaticBuild__then__returns_true() throws Exception {
+    public void given__scm__lastSeenRevision__isAutomaticBuild__then__returns_true() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
@@ -83,6 +84,7 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
                             new MockSCMRevision(head, "dummy"),
                             null
                     ),
@@ -95,7 +97,7 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
     public void if__first__branch__indexing__isAutomaticBuild__then__returns__true() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
-            BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "my-project");
+            BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "project");
             prj.setCriteria(null);
             BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches()));
             source.setBuildStrategies(Collections.<BranchBuildStrategy>singletonList(new SkipInitialBuildOnFirstBranchIndexing()));

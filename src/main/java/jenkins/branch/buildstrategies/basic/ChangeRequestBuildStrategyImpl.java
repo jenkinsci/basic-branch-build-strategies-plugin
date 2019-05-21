@@ -28,11 +28,12 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Functions;
 import hudson.model.TaskListener;
-import hudson.util.LogTaskListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+
+import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -101,7 +102,18 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     @CheckForNull SCMRevision prevRevision) {
-        return isAutomaticBuild(source, head, currRevision, prevRevision, new LogTaskListener(LOGGER, Level.INFO));
+        return isAutomaticBuild(source, head, currRevision, prevRevision, new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Restricted(ProtectedExternally.class)
+    @Deprecated
+    @Override
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    @CheckForNull SCMRevision prevRevision, @NonNull TaskListener taskListener) {
+        return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
     }
 
     /**
@@ -110,15 +122,15 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
     @Restricted(ProtectedExternally.class)
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision prevRevision, TaskListener listener) {
+                                    @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull TaskListener listener) {
         if (!(head instanceof ChangeRequestSCMHead)) {
             return false;
         }
         if (ignoreTargetOnlyChanges
                 && currRevision instanceof ChangeRequestSCMRevision
-                && prevRevision instanceof ChangeRequestSCMRevision) {
+                && lastBuiltRevision instanceof ChangeRequestSCMRevision) {
             ChangeRequestSCMRevision<?> curr = (ChangeRequestSCMRevision<?>) currRevision;
-            if (curr.isMerge() && curr.equivalent((ChangeRequestSCMRevision<?>) prevRevision)) {
+            if (curr.isMerge() && curr.equivalent((ChangeRequestSCMRevision<?>) lastBuiltRevision)) {
                 return false;
             }
         }

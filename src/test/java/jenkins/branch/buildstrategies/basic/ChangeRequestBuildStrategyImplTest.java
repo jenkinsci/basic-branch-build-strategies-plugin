@@ -51,6 +51,8 @@ public class ChangeRequestBuildStrategyImplTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
+                            null,
                             null
                     ),
                     is(false)
@@ -67,6 +69,8 @@ public class ChangeRequestBuildStrategyImplTest {
                             new MockSCMSource(c, "dummy"),
                             head,
                             new MockSCMRevision(head, "dummy"),
+                            null,
+                            null,
                             null
                     ),
                     is(false)
@@ -85,6 +89,8 @@ public class ChangeRequestBuildStrategyImplTest {
                             head,
                             new MockChangeRequestSCMRevision(head,
                                     new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
+                            null,
+                            null,
                             null
                     ),
                     is(true)
@@ -106,6 +112,8 @@ public class ChangeRequestBuildStrategyImplTest {
                             head,
                             new MockChangeRequestSCMRevision(head,
                                     new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
+                            null,
+                            null,
                             null
                     ),
                     is(true)
@@ -135,6 +143,8 @@ public class ChangeRequestBuildStrategyImplTest {
                             head,
                             new MockChangeRequestSCMRevision(head,
                                     new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
+                            null,
+                            null,
                             null
                     ),
                     is(false)
@@ -156,6 +166,8 @@ public class ChangeRequestBuildStrategyImplTest {
                             head,
                             new MockChangeRequestSCMRevision(head,
                                     new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
+                            null,
+                            null,
                             null
                     ),
                     is(false)
@@ -174,6 +186,8 @@ public class ChangeRequestBuildStrategyImplTest {
                             head,
                             new MockChangeRequestSCMRevision(head,
                                     new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
+                            null,
+                            null,
                             null
                     ),
                     is(true)
@@ -212,7 +226,9 @@ public class ChangeRequestBuildStrategyImplTest {
                             new MockChangeRequestSCMRevision(head,
                                     new MockSCMRevision(new MockSCMHead("master"), "dummy"), "new-dummy"),
                             new MockChangeRequestSCMRevision(head,
-                                    new MockSCMRevision(new MockSCMHead("master"), "old-dummy"), "dummy")
+                                    new MockSCMRevision(new MockSCMHead("master"), "old-dummy"), "dummy"),
+                            null,
+                            null
                     ),
                     is(true)
             );
@@ -231,7 +247,9 @@ public class ChangeRequestBuildStrategyImplTest {
                             new MockChangeRequestSCMRevision(head,
                                     new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
                             new MockChangeRequestSCMRevision(head,
-                                    new MockSCMRevision(new MockSCMHead("master"), "old-dummy"), "dummy")
+                                    new MockSCMRevision(new MockSCMHead("master"), "old-dummy"), "dummy"),
+                            null,
+                            null
                     ),
                     is(false)
             );

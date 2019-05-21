@@ -54,6 +54,7 @@ public class NoneBranchBuildStrategyImplTest {
                     head,
                     new MockSCMRevision(head, "dummy"),
                     null,
+                    null,
                     null
                 ),
                 is(false)
@@ -70,13 +71,13 @@ public class NoneBranchBuildStrategyImplTest {
                 new NoneBranchBuildStrategyImpl(Arrays.asList(
                     new BranchBuildStrategy() {
                         @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource scmSource, @NonNull SCMHead scmHead, @NonNull SCMRevision scmRevision, SCMRevision scmRevision1, TaskListener taskListener) {
+                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
                             return true;
                         }
                     },
                     new BranchBuildStrategy() {
                         @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource scmSource, @NonNull SCMHead scmHead, @NonNull SCMRevision scmRevision, SCMRevision scmRevision1, TaskListener taskListener) {
+                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
                             return true;
                         }
                     }
@@ -84,6 +85,7 @@ public class NoneBranchBuildStrategyImplTest {
                     new MockSCMSource(c, "dummy"),
                     head,
                     new MockSCMRevision(head, "dummy"),
+                    null,
                     null,
                     null
                 ),
@@ -100,13 +102,13 @@ public class NoneBranchBuildStrategyImplTest {
                 new NoneBranchBuildStrategyImpl(Arrays.asList(
                     new BranchBuildStrategy() {
                         @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource scmSource, @NonNull SCMHead scmHead, @NonNull SCMRevision scmRevision, SCMRevision scmRevision1, TaskListener taskListener) {
+                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
                             return false;
                         }
                     },
                     new BranchBuildStrategy() {
                         @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource scmSource, @NonNull SCMHead scmHead, @NonNull SCMRevision scmRevision, SCMRevision scmRevision1, TaskListener taskListener) {
+                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
                             return false;
                         }
                     }
@@ -114,6 +116,7 @@ public class NoneBranchBuildStrategyImplTest {
                     new MockSCMSource(c, "dummy"),
                     head,
                     new MockSCMRevision(head, "dummy"),
+                    null,
                     null,
                     null
                 ),
@@ -131,13 +134,13 @@ public class NoneBranchBuildStrategyImplTest {
                 new NoneBranchBuildStrategyImpl(Arrays.asList(
                     new BranchBuildStrategy() {
                         @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource scmSource, @NonNull SCMHead scmHead, @NonNull SCMRevision scmRevision, SCMRevision scmRevision1, TaskListener taskListener) {
+                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
                             return true;
                         }
                     },
                     new BranchBuildStrategy() {
                         @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource scmSource, @NonNull SCMHead scmHead, @NonNull SCMRevision scmRevision, SCMRevision scmRevision1, TaskListener taskListener) {
+                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
                             fail("strategy evaluation must short circuit");
                             return false;
                         }
@@ -146,6 +149,7 @@ public class NoneBranchBuildStrategyImplTest {
                     new MockSCMSource(c, "dummy"),
                     head,
                     new MockSCMRevision(head, "dummy"),
+                    null,
                     null,
                     null
                 ),

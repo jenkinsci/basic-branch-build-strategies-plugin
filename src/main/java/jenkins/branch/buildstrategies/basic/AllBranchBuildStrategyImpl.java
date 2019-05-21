@@ -30,8 +30,11 @@ import hudson.Util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import hudson.model.TaskListener;
+import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -39,6 +42,8 @@ import jenkins.scm.api.SCMRevision;
 import jenkins.scm.api.SCMSource;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
+
+import javax.annotation.CheckForNull;
 
 /**
  * A {@link BranchBuildStrategy} that builds branches based on the results of all sub strategies matching.
@@ -65,9 +70,27 @@ public class AllBranchBuildStrategyImpl extends BranchBuildStrategy {
     /**
      * {@inheritDoc}
      */
+    @Deprecated
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    @CheckForNull SCMRevision prevRevision) {
+        return isAutomaticBuild(source,head, currRevision, prevRevision, new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Deprecated
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    @CheckForNull SCMRevision prevRevision, @NonNull TaskListener taskListener) {
+        return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    SCMRevision prevRevision, TaskListener taskListener) {
+                                    @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull TaskListener taskListener) {
 
         if(strategies.isEmpty()){
             return false;
@@ -78,7 +101,8 @@ public class AllBranchBuildStrategyImpl extends BranchBuildStrategy {
                 source,
                 head,
                 currRevision,
-                prevRevision,
+                lastBuiltRevision,
+                lastSeenRevision,
                 taskListener
             )){
                 return false;

@@ -35,6 +35,8 @@ import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.DataBoundConstructor;
 
+import javax.annotation.CheckForNull;
+
 
 @Restricted(NoExternalUse.class)
 @Extension
@@ -45,9 +47,22 @@ public class SkipInitialBuildOnFirstBranchIndexing extends BranchBuildStrategy {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Deprecated
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    @CheckForNull SCMRevision prevRevision, TaskListener taskListener) {
+        return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource scmSource, @NonNull SCMHead scmHead, @NonNull SCMRevision currRevision, SCMRevision prevRevision, TaskListener taskListener) {
-        if (prevRevision != null) {
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull TaskListener taskListener) {
+        if (lastSeenRevision != null) {
             return true;
         }
         return false;
