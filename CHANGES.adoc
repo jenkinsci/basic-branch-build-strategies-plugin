@@ -11,6 +11,9 @@ Template:
 ----
 
 ////
+== Version 1.3.2 (2019-05-23)
+* https://issues.jenkins-ci.org/browse/JENKINS-38552[JENKINS-38552] Sync with branch-api 2.5.1 to use lastSeenRevision + lastBuilt. link:https://github.com/jenkinsci/basic-branch-build-strategies-plugin/pull/5[PR-5]
+
 == Version 1.3.1 (2019-04-16)
 
 * Fixed incorrect layering between API and SPI calls - only the API is allowed to call the SPI directly and the SPI in link:https://github.com/jenkinsci/basic-branch-build-strategies-plugin/pull/3[PR-3] was breaking that contract and calling the delegate SPIs directly rather than acting as an API consumer, resulting in link:https://issues.jenkins-ci.org/browse/JENKINS-56984[JENKINS-56984]
