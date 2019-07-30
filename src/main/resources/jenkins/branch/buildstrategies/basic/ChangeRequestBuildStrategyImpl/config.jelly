@@ -29,4 +29,7 @@
   <f:entry field="ignoreUntrustedChanges">
     <f:checkbox title="${%Ignore change requests flagged as originating from an untrusted source}"/>
   </f:entry>
+  <f:entry field="ignoreAllChanges">
+    <f:checkbox title="${%Ignore all change requests}"/>
+  </f:entry>
 </j:jelly>

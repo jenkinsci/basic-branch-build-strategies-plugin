@@ -59,6 +59,7 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
     private static final Logger LOGGER = Logger.getLogger(ChangeRequestBuildStrategyImpl.class.getName());
     private final boolean ignoreTargetOnlyChanges;
     private final boolean ignoreUntrustedChanges;
+    private final boolean ignoreAllChanges;
 
     /**
      * Our constructor.
@@ -80,11 +81,28 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
      *         the target branch revision.
      * @param ignoreUntrustedChanges {@code true} to check the trusted revision and ignore if different, which
      *         would have the effect of ignoring change requests that originate from an untrusted source.
+     * @deprecated use {@link #ChangeRequestBuildStrategyImpl(boolean, boolean, boolean)}
+     * @since 1.3.3
+     */
+    @Deprecated
+    public ChangeRequestBuildStrategyImpl(boolean ignoreTargetOnlyChanges, boolean ignoreUntrustedChanges) {
+        this(ignoreTargetOnlyChanges, ignoreUntrustedChanges, false);
+    }
+
+    /**
+     * Our constructor.
+     *
+     * @param ignoreTargetOnlyChanges {@code true} to ignore merge revision changes where the only difference is
+     *         the target branch revision.
+     * @param ignoreUntrustedChanges {@code true} to check the trusted revision and ignore if different, which
+     *         would have the effect of ignoring change requests that originate from an untrusted source.
+     * @param ignoreAllChanges {@code true} to ignore all change requests.
      */
     @DataBoundConstructor
-    public ChangeRequestBuildStrategyImpl(boolean ignoreTargetOnlyChanges, boolean ignoreUntrustedChanges) {
+    public ChangeRequestBuildStrategyImpl(boolean ignoreTargetOnlyChanges, boolean ignoreUntrustedChanges, boolean ignoreAllChanges) {
         this.ignoreTargetOnlyChanges = ignoreTargetOnlyChanges;
         this.ignoreUntrustedChanges = ignoreUntrustedChanges;
+        this.ignoreAllChanges = ignoreAllChanges;
     }
 
     public boolean isIgnoreTargetOnlyChanges() {
@@ -94,6 +112,8 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
     public boolean isIgnoreUntrustedChanges() {
         return ignoreUntrustedChanges;
     }
+
+    public boolean isIgnoreAllChanges() { return ignoreAllChanges; }
 
     /**
      * {@inheritDoc}
@@ -124,6 +144,9 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull TaskListener listener) {
         if (!(head instanceof ChangeRequestSCMHead)) {
+            return false;
+        }
+        if (ignoreAllChanges) {
             return false;
         }
         if (ignoreTargetOnlyChanges
@@ -182,6 +205,7 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
         return "ChangeRequestBuildStrategyImpl{" +
                 "ignoreTargetOnlyChanges=" + ignoreTargetOnlyChanges +
                 "ignoreUntrustedChanges=" + ignoreUntrustedChanges +
+                "ignoreAllChanges=" + ignoreAllChanges +
                 '}';
     }
 
