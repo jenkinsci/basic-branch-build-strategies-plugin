@@ -6,41 +6,4 @@ For generic information about how to use the Basic Branch Build Strategies plugi
 
 For changes to the plugin see link:CHANGES{outfilesuffix}[the changelog]
 
-=== Developer information
-
-The following information is provided for anyone wanting to develop this plugin.
-
-* link:CONTRIBUTING{outfilesuffix}[Contributor guidelines]
-
-==== Environment
-
-The following build environment is required to build this plugin
-
-* `java-1.8` and `maven-3.5.2`
-
-==== Build
-
-To build the plugin locally:
-
-[source,shell]
-----
-mvn clean verify
-----
-
-==== Release
-
-To release the plugin:
-
-[source,shell]
-----
-mvn release:prepare release:perform -B
-----
-
-==== Test local instance
-
-To test in a local Jenkins instance
-
-[source,shell]
-----
-mvn hpi:run
-----
+For information on contributing to this plugin see link:CONTRIBUTING{outfilesuffix}[Contributor guidelines]
