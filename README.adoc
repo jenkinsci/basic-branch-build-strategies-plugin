@@ -1,10 +1,8 @@
 == Basic Branch Build Strategies Plugin
 
-This plugin provides some basic branch build strategies for use with http://wiki.jenkins.io/display/JENKINS/Branch+API+Plugin[Branch API] based projects.
+This plugin provides some basic branch build strategies for use with https://plugins.jenkins.io/branch-api/[Branch API] based projects.
 
 For generic information about how to use the Basic Branch Build Strategies plugin, please see link:docs/user{outfilesuffix}[the user guide]
-
-For other details on the plugin see http://wiki.jenkins.io/display/JENKINS/Basic+Branch+Build+Strategies+Plugin[the wiki page]
 
 For changes to the plugin see link:CHANGES{outfilesuffix}[the changelog]
 
