@@ -1,8 +1,6 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2019, CloudBees, Inc.
- *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -23,29 +21,27 @@
  */
 package jenkins.branch.buildstrategies.basic;
 
+import javax.annotation.CheckForNull;
+
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.model.Cause;
 import hudson.model.TaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
+import jenkins.branch.BranchIndexingCause;
 import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.SCMRevision;
 import jenkins.scm.api.SCMSource;
-import org.kohsuke.accmod.Restricted;
-import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-import javax.annotation.CheckForNull;
-
-
-@Restricted(NoExternalUse.class)
-@Extension
-public class SkipInitialBuildOnFirstBranchIndexing extends BranchBuildStrategy {
+/**
+ * @author Zhenlei Huang
+ */
+public class CustomSkipInitialBuildOnFirstBranchIndexing extends BranchBuildStrategy {
 
     @DataBoundConstructor
-    public SkipInitialBuildOnFirstBranchIndexing() {
-
+    public CustomSkipInitialBuildOnFirstBranchIndexing() {
     }
 
     /**
@@ -74,8 +70,21 @@ public class SkipInitialBuildOnFirstBranchIndexing extends BranchBuildStrategy {
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision,
                                     @NonNull TaskListener taskListener, @NonNull Cause[] causes) {
-        if (lastSeenRevision != null) {
-            return true;
+        // skip build on first branch indexing
+        if (lastSeenRevision == null && hasBranchIndexingCause(causes)) {
+            return false;
+        }
+        if (currRevision.equals(lastSeenRevision)) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean hasBranchIndexingCause(@NonNull Cause[] causes) {
+        for (Cause cause : causes) {
+            if (cause instanceof BranchIndexingCause) {
+                return true;
+            }
         }
         return false;
     }
@@ -91,7 +100,7 @@ public class SkipInitialBuildOnFirstBranchIndexing extends BranchBuildStrategy {
         @NonNull
         @Override
         public String getDisplayName() {
-            return Messages.SkipInitialBuildOnFirstBranchIndexing_displayName();
+            return Messages.CustomSkipInitialBuildOnFirstBranchIndexing_displayName();
         }
 
     }

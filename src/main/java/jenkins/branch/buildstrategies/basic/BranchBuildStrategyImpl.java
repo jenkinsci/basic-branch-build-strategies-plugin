@@ -25,6 +25,7 @@ package jenkins.branch.buildstrategies.basic;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
+import hudson.model.Cause;
 import hudson.model.TaskListener;
 import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
@@ -77,9 +78,20 @@ public class BranchBuildStrategyImpl extends BranchBuildStrategy {
     /**
      * {@inheritDoc}
      */
+    @Deprecated
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull TaskListener taskListener) {
+        return isAutomaticBuild(source, head, currRevision, lastBuiltRevision, lastSeenRevision, taskListener, new Cause[0]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision,
+                                    @NonNull TaskListener taskListener, @NonNull Cause[] causes) {
         if (head instanceof ChangeRequestSCMHead) {
             return false;
         }

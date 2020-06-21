@@ -27,6 +27,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Functions;
+import hudson.model.Cause;
 import hudson.model.TaskListener;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -120,9 +121,21 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
      * {@inheritDoc}
      */
     @Restricted(ProtectedExternally.class)
+    @Deprecated
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull TaskListener listener) {
+        return isAutomaticBuild(source, head, currRevision, lastBuiltRevision, lastSeenRevision, listener, new Cause[0]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Restricted(ProtectedExternally.class)
+    @Override
+    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
+                                    @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision,
+                                    @NonNull TaskListener listener, @NonNull Cause[] causes) {
         if (!(head instanceof ChangeRequestSCMHead)) {
             return false;
         }
