@@ -69,18 +69,8 @@ public class AllBranchBuildStrategyImplTest {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
                 new AllBranchBuildStrategyImpl(Arrays.asList(
-                    new BranchBuildStrategy() {
-                        @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
-                            return true;
-                        }
-                    },
-                    new BranchBuildStrategy() {
-                        @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
-                            return true;
-                        }
-                    }
+                    new AlwaysBranchBuildStrategyImpl(),
+                    new AlwaysBranchBuildStrategyImpl()
                 )).isAutomaticBuild(
                     new MockSCMSource(c, "dummy"),
                     head,
@@ -100,18 +90,8 @@ public class AllBranchBuildStrategyImplTest {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
                 new AllBranchBuildStrategyImpl(Arrays.asList(
-                    new BranchBuildStrategy() {
-                        @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
-                            return false;
-                        }
-                    },
-                    new BranchBuildStrategy() {
-                        @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
-                            return false;
-                        }
-                    }
+                    new NeverBranchBuildStrategyImpl(),
+                    new NeverBranchBuildStrategyImpl()
                 )).isAutomaticBuild(
                     new MockSCMSource(c, "dummy"),
                     head,
@@ -132,18 +112,8 @@ public class AllBranchBuildStrategyImplTest {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
                 new AllBranchBuildStrategyImpl(Arrays.asList(
-                    new BranchBuildStrategy() {
-                        @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
-                            return false;
-                        }
-                    },
-                    new BranchBuildStrategy() {
-                        @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
-                            return true;
-                        }
-                    }
+                    new NeverBranchBuildStrategyImpl(),
+                    new AlwaysBranchBuildStrategyImpl()
                 )).isAutomaticBuild(
                     new MockSCMSource(c, "dummy"),
                     head,
