@@ -26,6 +26,8 @@ package jenkins.branch.buildstrategies.basic;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.model.TaskListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -41,6 +43,8 @@ import javax.annotation.CheckForNull;
 @Restricted(NoExternalUse.class)
 @Extension
 public class SkipInitialBuildOnFirstBranchIndexing extends BranchBuildStrategy {
+
+    private static final Logger LOGGER = Logger.getLogger(SkipInitialBuildOnFirstBranchIndexing.class.getName());
 
     @DataBoundConstructor
     public SkipInitialBuildOnFirstBranchIndexing() {
@@ -62,7 +66,12 @@ public class SkipInitialBuildOnFirstBranchIndexing extends BranchBuildStrategy {
     @Override
     public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
                                     @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull TaskListener taskListener) {
-        if (lastSeenRevision != null) {
+        LOGGER.log(Level.INFO, "lastSeenRevision: {0}, currRevision: {1}",
+                new Object[]{
+                    lastSeenRevision, currRevision
+                }
+        );
+        if (lastSeenRevision != null && !lastSeenRevision.equals(currRevision)) {
             return true;
         }
         return false;
