@@ -29,7 +29,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>3.43</version>
+    <version>4.31</version>
     <relativePath />
   </parent>
 
@@ -66,7 +66,7 @@
 
   <properties>
     <java.level>8</java.level>
-    <jenkins.version>2.138</jenkins.version>
+    <jenkins.version>2.289.1</jenkins.version>
     <scm-api.version>2.4.1</scm-api.version>
   </properties>
 
