@@ -31,7 +31,6 @@ import hudson.model.ItemGroup;
 import hudson.model.TaskListener;
 import java.io.IOException;
 import java.util.Map;
-import javax.annotation.Nonnull;
 import jenkins.branch.MultiBranchProject;
 import jenkins.branch.MultiBranchProjectFactory;
 import jenkins.branch.MultiBranchProjectFactoryDescriptor;
