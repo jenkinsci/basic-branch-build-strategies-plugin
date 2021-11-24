@@ -39,7 +39,7 @@ import jenkins.scm.impl.mock.MockTagSCMHead;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ChangeRequestBuildStrategyImplTest {
     @Test
