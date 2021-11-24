@@ -41,7 +41,7 @@
   <description>
     This plugin provides some basic branch build strategies for use with Branch API based projects.
   </description>
-  <url>http://wiki.jenkins.io/display/JENKINS/Basic+Branch+Build+Strategies+Plugin</url>
+  <url>https://github.com/jenkinsci/basic-branch-build-strategies-plugin/blob/master/docs/user.adoc</url>
   <licenses>
     <license>
       <name>The MIT license</name>
@@ -58,7 +58,7 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
+    <connection>scm:git:https://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
     <url>http://github.com/jenkinsci/${project.artifactId}-plugin</url>
     <tag>HEAD</tag>
