@@ -34,7 +34,7 @@
   </parent>
 
   <artifactId>basic-branch-build-strategies</artifactId>
-  <version>1.3.3-SNAPSHOT</version>
+  <version>1.4.0-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <name>Basic Branch Build Strategies Plugin</name>
