@@ -24,19 +24,6 @@
  */
 package jenkins.branch.buildstrategies.basic.harness;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.NonNull;
-import hudson.Extension;
-import hudson.model.ItemGroup;
-import hudson.model.TaskListener;
-import java.io.IOException;
-import java.util.Map;
-import jenkins.branch.MultiBranchProject;
-import jenkins.branch.MultiBranchProjectFactory;
-import jenkins.branch.MultiBranchProjectFactoryDescriptor;
-import jenkins.scm.api.SCMSource;
-import jenkins.scm.api.SCMSourceCriteria;
-
 import hudson.BulkChange;
 import hudson.Extension;
 import hudson.model.FreeStyleBuild;
