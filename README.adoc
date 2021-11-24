@@ -6,4 +6,4 @@ For generic information about how to use the Basic Branch Build Strategies plugi
 
 For changes to the plugin see link:CHANGES{outfilesuffix}[the changelog]
 
-For information on contributing to this plugin see link:CONTRIBUTING{outfilesuffix}[Contributor guidelines]
+For information on contributing to this plugin see link:CONTRIBUTING.md[Contributor guidelines]
