@@ -23,6 +23,7 @@
  */
 package jenkins.branch.buildstrategies.basic;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
@@ -42,8 +43,6 @@ import jenkins.scm.api.SCMRevision;
 import jenkins.scm.api.SCMSource;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
-
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 /**
  * A {@link BranchBuildStrategy} that builds branches based on the results of all sub strategies matching.

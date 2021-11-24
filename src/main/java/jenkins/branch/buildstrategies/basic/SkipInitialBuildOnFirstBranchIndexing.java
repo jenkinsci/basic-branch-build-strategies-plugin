@@ -23,6 +23,7 @@
  */
 package jenkins.branch.buildstrategies.basic;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.model.TaskListener;
@@ -36,9 +37,6 @@ import jenkins.scm.api.SCMSource;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.DataBoundConstructor;
-
-import edu.umd.cs.findbugs.annotations.CheckForNull;
-
 
 @Restricted(NoExternalUse.class)
 @Extension
