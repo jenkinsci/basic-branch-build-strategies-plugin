@@ -76,7 +76,7 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
     }
 
     @Test
-    public void given__scm__lastSeenRevision__isAutomaticBuild__then__returns_true() throws Exception {
+    public void given__scm__lastSeenRevision__but__not__equal__to__currRevision__isAutomaticBuild__then__returns_true() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
@@ -85,10 +85,29 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
                             head,
                             new MockSCMRevision(head, "dummy"),
                             null,
-                            new MockSCMRevision(head, "dummy"),
+                            new MockSCMRevision(head, "bar"),
                             null
                     ),
                     is(true)
+            );
+        }
+    }
+
+    @Test
+    public void given__scm__lastSeenRevision__equal__to__currRevision__isAutomaticBuild__then__returns_false() throws Exception {
+        try (MockSCMController c = MockSCMController.create()) {
+            MockSCMHead head = new MockSCMHead("master");
+            MockSCMRevision revision = new MockSCMRevision(head, "dummy");
+            assertThat(
+                    new SkipInitialBuildOnFirstBranchIndexing().isAutomaticBuild(
+                            new MockSCMSource(c, "dummy"),
+                            head,
+                            revision,
+                            null,
+                            revision,
+                            null
+                    ),
+                    is(false)
             );
         }
     }
