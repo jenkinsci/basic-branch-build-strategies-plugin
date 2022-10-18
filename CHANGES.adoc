@@ -11,9 +11,6 @@ Template:
 ----
 
 ////
-== Version 1.3.3 (2022-10-17)
-* https://issues.jenkins.io/browse/JENKINS-67037[JENKINS-67037] Skip build on matched jobs if manual scan is clicked. link:https://github.com/jenkinsci/basic-branch-build-strategies-plugin/pull/12[PR-12]
-
 == Version 1.3.2 (2019-05-23)
 * https://issues.jenkins-ci.org/browse/JENKINS-38552[JENKINS-38552] Sync with branch-api 2.5.1 to use lastSeenRevision + lastBuilt. link:https://github.com/jenkinsci/basic-branch-build-strategies-plugin/pull/5[PR-5]
 
