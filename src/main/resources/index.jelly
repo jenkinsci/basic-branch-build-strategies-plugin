@@ -1,0 +1,4 @@
+<?jelly escape-by-default='true'?>
+<div>
+    This plugin provides some basic branch build strategies for use with Branch API based projects.
+</div>
