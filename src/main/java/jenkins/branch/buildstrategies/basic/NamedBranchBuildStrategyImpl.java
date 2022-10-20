@@ -24,7 +24,6 @@
 package jenkins.branch.buildstrategies.basic;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
 import hudson.model.AbstractDescribableImpl;
@@ -38,7 +37,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import javax.annotation.Nonnull;
+import edu.umd.cs.findbugs.annotations.NonNull;
 
 import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
@@ -249,7 +248,7 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
         @Symbol("exact")
         @Extension
         public static class DescriptorImpl extends NameFilterDescriptor {
-            @Nonnull
+            @NonNull
             @Override
             public String getDisplayName() {
                 return Messages.NamedBranchBuildStrategyImpl_exactDisplayName();
@@ -323,7 +322,7 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
         @Symbol("regex")
         @Extension
         public static class DescriptorImpl extends NameFilterDescriptor {
-            @Nonnull
+            @NonNull
             @Override
             public String getDisplayName() {
                 return Messages.NamedBranchBuildStrategyImpl_regexDisplayName();
@@ -462,7 +461,7 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
         @Symbol("wildcards")
         @Extension
         public static class DescriptorImpl extends NameFilterDescriptor {
-            @Nonnull
+            @NonNull
             @Override
             public String getDisplayName() {
                 return Messages.NamedBranchBuildStrategyImpl_wildcardDisplayName();
