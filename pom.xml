@@ -68,6 +68,8 @@
     <changelist>999999-SNAPSHOT</changelist>
     <gitHubRepo>jenkinsci/basic-branch-build-strategies-plugin</gitHubRepo>
     <jenkins.version>2.361.4</jenkins.version>
+    <spotbugs.effort>Max</spotbugs.effort>
+    <spotbugs.threshold>Low</spotbugs.threshold>
   </properties>
 
   <repositories>
