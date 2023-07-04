@@ -52,8 +52,22 @@
 
   <developers>
     <developer>
+      <id>markewaite</id>
+      <name>Mark Waite</name>
+      <email>mark.earl.waite@gmail.com</email>
+    </developer>
+    <developer>
+      <id>rsandell</id>
+      <name>Robert Sandell</name>
+      <email>rsandell@cloudbees.com</email>
+      <url>http://rsandell.com</url>
+    </developer>
+    <developer>
       <id>stephenconnolly</id>
       <name>Stephen Connolly</name>
+      <roles>
+        <role>emeritus</role>
+      </roles>
     </developer>
   </developers>
 
