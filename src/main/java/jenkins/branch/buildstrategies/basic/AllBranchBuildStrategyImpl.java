@@ -27,15 +27,13 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
-
+import hudson.model.TaskListener;
+import hudson.util.LogTaskListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import hudson.model.TaskListener;
-import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -70,43 +68,54 @@ public class AllBranchBuildStrategyImpl extends BranchBuildStrategy {
      * {@inheritDoc}
      */
     @Deprecated
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision prevRevision) {
-        return isAutomaticBuild(source,head, currRevision, prevRevision, new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
+    public boolean isAutomaticBuild(
+            @NonNull SCMSource source,
+            @NonNull SCMHead head,
+            @NonNull SCMRevision currRevision,
+            @CheckForNull SCMRevision prevRevision) {
+        return isAutomaticBuild(
+                source,
+                head,
+                currRevision,
+                prevRevision,
+                new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
     }
 
     /**
      * {@inheritDoc}
      */
     @Deprecated
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision prevRevision, @NonNull TaskListener taskListener) {
-        return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
+    public boolean isAutomaticBuild(
+            @NonNull SCMSource source,
+            @NonNull SCMHead head,
+            @NonNull SCMRevision currRevision,
+            @CheckForNull SCMRevision prevRevision,
+            @NonNull TaskListener taskListener) {
+        return isAutomaticBuild(source, head, currRevision, prevRevision, prevRevision, taskListener);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull TaskListener taskListener) {
+    public boolean isAutomaticBuild(
+            @NonNull SCMSource source,
+            @NonNull SCMHead head,
+            @NonNull SCMRevision currRevision,
+            @CheckForNull SCMRevision lastBuiltRevision,
+            @CheckForNull SCMRevision lastSeenRevision,
+            @NonNull TaskListener taskListener) {
 
-        if(strategies.isEmpty()){
+        if (strategies.isEmpty()) {
             return false;
         }
 
-        for (BranchBuildStrategy strategy: strategies) {
-            if(!strategy.automaticBuild(
-                source,
-                head,
-                currRevision,
-                lastBuiltRevision,
-                lastSeenRevision,
-                taskListener
-            )){
+        for (BranchBuildStrategy strategy : strategies) {
+            if (!strategy.automaticBuild(
+                    source, head, currRevision, lastBuiltRevision, lastSeenRevision, taskListener)) {
                 return false;
-            };
-
+            }
+            ;
         }
         return true;
     }
@@ -143,11 +152,8 @@ public class AllBranchBuildStrategyImpl extends BranchBuildStrategy {
 
     @Override
     public String toString() {
-        return "AllBranchBuildStrategyImpl{" +
-                "strategies=" + strategies +
-                '}';
+        return "AllBranchBuildStrategyImpl{" + "strategies=" + strategies + '}';
     }
-
 
     /**
      * Our descriptor.
@@ -164,5 +170,4 @@ public class AllBranchBuildStrategyImpl extends BranchBuildStrategy {
             return Messages.AllBranchBuildStrategyImpl_displayName();
         }
     }
-
 }

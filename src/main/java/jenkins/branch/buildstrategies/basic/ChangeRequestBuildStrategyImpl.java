@@ -28,12 +28,11 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Functions;
 import hudson.model.TaskListener;
+import hudson.util.LogTaskListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -57,6 +56,7 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
      * Our logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ChangeRequestBuildStrategyImpl.class.getName());
+
     private final boolean ignoreTargetOnlyChanges;
     private final boolean ignoreUntrustedChanges;
 
@@ -100,9 +100,17 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Deprecated
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision prevRevision) {
-        return isAutomaticBuild(source, head, currRevision, prevRevision, new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
+    public boolean isAutomaticBuild(
+            @NonNull SCMSource source,
+            @NonNull SCMHead head,
+            @NonNull SCMRevision currRevision,
+            @CheckForNull SCMRevision prevRevision) {
+        return isAutomaticBuild(
+                source,
+                head,
+                currRevision,
+                prevRevision,
+                new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
     }
 
     /**
@@ -111,9 +119,13 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
     @Restricted(ProtectedExternally.class)
     @Deprecated
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision prevRevision, @NonNull TaskListener taskListener) {
-        return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
+    public boolean isAutomaticBuild(
+            @NonNull SCMSource source,
+            @NonNull SCMHead head,
+            @NonNull SCMRevision currRevision,
+            @CheckForNull SCMRevision prevRevision,
+            @NonNull TaskListener taskListener) {
+        return isAutomaticBuild(source, head, currRevision, prevRevision, prevRevision, taskListener);
     }
 
     /**
@@ -121,8 +133,13 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Restricted(ProtectedExternally.class)
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull TaskListener listener) {
+    public boolean isAutomaticBuild(
+            @NonNull SCMSource source,
+            @NonNull SCMHead head,
+            @NonNull SCMRevision currRevision,
+            @CheckForNull SCMRevision lastBuiltRevision,
+            @CheckForNull SCMRevision lastSeenRevision,
+            @NonNull TaskListener listener) {
         if (!(head instanceof ChangeRequestSCMHead)) {
             return false;
         }
@@ -139,8 +156,8 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
                 return false;
             }
         } catch (IOException | InterruptedException e) {
-            LogRecord lr = new LogRecord(Level.WARNING,
-                    "Could not determine trust status for revision {0} of {1}, assuming untrusted");
+            LogRecord lr = new LogRecord(
+                    Level.WARNING, "Could not determine trust status for revision {0} of {1}, assuming untrusted");
             lr.setParameters(new Object[] {currRevision, head});
             lr.setThrown(e);
             Functions.printLogRecord(lr);
@@ -179,10 +196,9 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Override
     public String toString() {
-        return "ChangeRequestBuildStrategyImpl{" +
-                "ignoreTargetOnlyChanges=" + ignoreTargetOnlyChanges +
-                "ignoreUntrustedChanges=" + ignoreUntrustedChanges +
-                '}';
+        return "ChangeRequestBuildStrategyImpl{" + "ignoreTargetOnlyChanges="
+                + ignoreTargetOnlyChanges + "ignoreUntrustedChanges="
+                + ignoreUntrustedChanges + '}';
     }
 
     /**

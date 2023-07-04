@@ -23,6 +23,9 @@
  */
 package jenkins.branch.buildstrategies.basic;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+
 import hudson.model.Computer;
 import hudson.model.Executor;
 import hudson.model.TopLevelItem;
@@ -40,9 +43,6 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
-
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class FormBindingTest {
     /**
@@ -77,13 +77,17 @@ public class FormBindingTest {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
             prj.setCriteria(null);
-            BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches(),
-                    new MockSCMDiscoverTags(), new MockSCMDiscoverChangeRequests()));
+            BranchSource source = new BranchSource(new MockSCMSource(
+                    c,
+                    "foo",
+                    new MockSCMDiscoverBranches(),
+                    new MockSCMDiscoverTags(),
+                    new MockSCMDiscoverChangeRequests()));
             source.setBuildStrategies(Collections.<BranchBuildStrategy>singletonList(new BranchBuildStrategyImpl()));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(),
-                    contains((BranchBuildStrategy) new BranchBuildStrategyImpl()));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
+                    new BranchBuildStrategyImpl()));
         }
     }
 
@@ -93,23 +97,26 @@ public class FormBindingTest {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
             prj.setCriteria(null);
-            BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches(),
-                    new MockSCMDiscoverTags(), new MockSCMDiscoverChangeRequests()));
-            source.setBuildStrategies(Collections.<BranchBuildStrategy>singletonList(new NamedBranchBuildStrategyImpl(
-                    Arrays.asList(new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
+            BranchSource source = new BranchSource(new MockSCMSource(
+                    c,
+                    "foo",
+                    new MockSCMDiscoverBranches(),
+                    new MockSCMDiscoverTags(),
+                    new MockSCMDiscoverChangeRequests()));
+            source.setBuildStrategies(
+                    Collections.<BranchBuildStrategy>singletonList(new NamedBranchBuildStrategyImpl(Arrays.asList(
+                            new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
                             new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
                             new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
-                            new NamedBranchBuildStrategyImpl.WildcardsNameFilter("feature/*", "feature", false)
-                    ))));
+                            new NamedBranchBuildStrategyImpl.WildcardsNameFilter("feature/*", "feature", false)))));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(),
-                    contains((BranchBuildStrategy) new NamedBranchBuildStrategyImpl(
-                            Arrays.asList(new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
-                                    new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
-                                    new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
-                                    new NamedBranchBuildStrategyImpl.WildcardsNameFilter("feature/*", "feature", false)
-                            ))));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
+                    new NamedBranchBuildStrategyImpl(Arrays.asList(
+                            new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
+                            new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
+                            new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
+                            new NamedBranchBuildStrategyImpl.WildcardsNameFilter("feature/*", "feature", false)))));
         }
     }
 
@@ -119,14 +126,18 @@ public class FormBindingTest {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
             prj.setCriteria(null);
-            BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches(),
-                    new MockSCMDiscoverTags(), new MockSCMDiscoverChangeRequests()));
+            BranchSource source = new BranchSource(new MockSCMSource(
+                    c,
+                    "foo",
+                    new MockSCMDiscoverBranches(),
+                    new MockSCMDiscoverTags(),
+                    new MockSCMDiscoverChangeRequests()));
             source.setBuildStrategies(
                     Collections.<BranchBuildStrategy>singletonList(new ChangeRequestBuildStrategyImpl(false, false)));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(),
-                    contains((BranchBuildStrategy) new ChangeRequestBuildStrategyImpl(false, false)));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
+                    new ChangeRequestBuildStrategyImpl(false, false)));
         }
     }
 
@@ -136,14 +147,18 @@ public class FormBindingTest {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
             prj.setCriteria(null);
-            BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches(),
-                    new MockSCMDiscoverTags(), new MockSCMDiscoverChangeRequests()));
+            BranchSource source = new BranchSource(new MockSCMSource(
+                    c,
+                    "foo",
+                    new MockSCMDiscoverBranches(),
+                    new MockSCMDiscoverTags(),
+                    new MockSCMDiscoverChangeRequests()));
             source.setBuildStrategies(
                     Collections.<BranchBuildStrategy>singletonList(new ChangeRequestBuildStrategyImpl(true, false)));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(),
-                    contains((BranchBuildStrategy) new ChangeRequestBuildStrategyImpl(true, false)));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
+                    new ChangeRequestBuildStrategyImpl(true, false)));
         }
     }
 
@@ -153,14 +168,17 @@ public class FormBindingTest {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
             prj.setCriteria(null);
-            BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches(),
-                    new MockSCMDiscoverTags(), new MockSCMDiscoverChangeRequests()));
-            source.setBuildStrategies(
-                    Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("", "")));
+            BranchSource source = new BranchSource(new MockSCMSource(
+                    c,
+                    "foo",
+                    new MockSCMDiscoverBranches(),
+                    new MockSCMDiscoverTags(),
+                    new MockSCMDiscoverChangeRequests()));
+            source.setBuildStrategies(Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("", "")));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(),
-                    contains((BranchBuildStrategy) new TagBuildStrategyImpl("", "")));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
+                    new TagBuildStrategyImpl("", "")));
         }
     }
 
@@ -170,14 +188,18 @@ public class FormBindingTest {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
             prj.setCriteria(null);
-            BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches(),
-                    new MockSCMDiscoverTags(), new MockSCMDiscoverChangeRequests()));
+            BranchSource source = new BranchSource(new MockSCMSource(
+                    c,
+                    "foo",
+                    new MockSCMDiscoverBranches(),
+                    new MockSCMDiscoverTags(),
+                    new MockSCMDiscoverChangeRequests()));
             source.setBuildStrategies(
                     Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("0", "")));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(),
-                    contains((BranchBuildStrategy) new TagBuildStrategyImpl("0", "")));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
+                    new TagBuildStrategyImpl("0", "")));
         }
     }
 
@@ -187,14 +209,18 @@ public class FormBindingTest {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
             prj.setCriteria(null);
-            BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches(),
-                    new MockSCMDiscoverTags(), new MockSCMDiscoverChangeRequests()));
+            BranchSource source = new BranchSource(new MockSCMSource(
+                    c,
+                    "foo",
+                    new MockSCMDiscoverBranches(),
+                    new MockSCMDiscoverTags(),
+                    new MockSCMDiscoverChangeRequests()));
             source.setBuildStrategies(
                     Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("1", "")));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(),
-                    contains((BranchBuildStrategy) new TagBuildStrategyImpl("1", "")));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
+                    new TagBuildStrategyImpl("1", "")));
         }
     }
 
@@ -204,14 +230,18 @@ public class FormBindingTest {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
             prj.setCriteria(null);
-            BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches(),
-                    new MockSCMDiscoverTags(), new MockSCMDiscoverChangeRequests()));
+            BranchSource source = new BranchSource(new MockSCMSource(
+                    c,
+                    "foo",
+                    new MockSCMDiscoverBranches(),
+                    new MockSCMDiscoverTags(),
+                    new MockSCMDiscoverChangeRequests()));
             source.setBuildStrategies(
                     Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("-1", "")));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(),
-                    contains((BranchBuildStrategy) new TagBuildStrategyImpl("", "")));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
+                    new TagBuildStrategyImpl("", "")));
         }
     }
 
@@ -221,14 +251,18 @@ public class FormBindingTest {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
             prj.setCriteria(null);
-            BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches(),
-                    new MockSCMDiscoverTags(), new MockSCMDiscoverChangeRequests()));
+            BranchSource source = new BranchSource(new MockSCMSource(
+                    c,
+                    "foo",
+                    new MockSCMDiscoverBranches(),
+                    new MockSCMDiscoverTags(),
+                    new MockSCMDiscoverChangeRequests()));
             source.setBuildStrategies(
                     Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("", "0")));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(),
-                    contains((BranchBuildStrategy) new TagBuildStrategyImpl("", "0")));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
+                    new TagBuildStrategyImpl("", "0")));
         }
     }
 
@@ -238,14 +272,18 @@ public class FormBindingTest {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
             prj.setCriteria(null);
-            BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches(),
-                    new MockSCMDiscoverTags(), new MockSCMDiscoverChangeRequests()));
+            BranchSource source = new BranchSource(new MockSCMSource(
+                    c,
+                    "foo",
+                    new MockSCMDiscoverBranches(),
+                    new MockSCMDiscoverTags(),
+                    new MockSCMDiscoverChangeRequests()));
             source.setBuildStrategies(
                     Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("", "1")));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(),
-                    contains((BranchBuildStrategy) new TagBuildStrategyImpl("", "1")));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
+                    new TagBuildStrategyImpl("", "1")));
         }
     }
 
@@ -255,14 +293,18 @@ public class FormBindingTest {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
             prj.setCriteria(null);
-            BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches(),
-                    new MockSCMDiscoverTags(), new MockSCMDiscoverChangeRequests()));
+            BranchSource source = new BranchSource(new MockSCMSource(
+                    c,
+                    "foo",
+                    new MockSCMDiscoverBranches(),
+                    new MockSCMDiscoverTags(),
+                    new MockSCMDiscoverChangeRequests()));
             source.setBuildStrategies(
                     Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("", "-1")));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(),
-                    contains((BranchBuildStrategy) new TagBuildStrategyImpl("", "")));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
+                    new TagBuildStrategyImpl("", "")));
         }
     }
 }

@@ -23,6 +23,9 @@
  */
 package jenkins.branch.buildstrategies.basic;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 import java.util.Arrays;
 import java.util.Collections;
 import jenkins.scm.api.SCMHeadOrigin;
@@ -36,9 +39,6 @@ import jenkins.scm.impl.mock.MockSCMSource;
 import jenkins.scm.impl.mock.MockTagSCMHead;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 public class NamedBranchBuildStrategyImplTest {
     @Test
     public void given__regular_head__when__isAutomaticBuild__then__returns_true() throws Exception {
@@ -46,17 +46,15 @@ public class NamedBranchBuildStrategyImplTest {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
                     new NamedBranchBuildStrategyImpl(Collections.<NamedBranchBuildStrategyImpl.NameFilter>singletonList(
-                            new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false))
-                    ).isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"),
-                            head,
-                            new MockSCMRevision(head, "dummy"),
-                            null,
-                            null,
-                            null
-                    ),
-                    is(true)
-            );
+                                    new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false)))
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockSCMRevision(head, "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(true));
         }
     }
 
@@ -66,39 +64,35 @@ public class NamedBranchBuildStrategyImplTest {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis());
             assertThat(
                     new NamedBranchBuildStrategyImpl(Collections.<NamedBranchBuildStrategyImpl.NameFilter>singletonList(
-                            new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false))
-                    ).isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"),
-                            head,
-                            new MockSCMRevision(head, "dummy"),
-                            null,
-                            null,
-                            null
-                    ),
-                    is(false)
-            );
+                                    new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false)))
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockSCMRevision(head, "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(false));
         }
     }
 
     @Test
     public void given__cr_head__when__isAutomaticBuild__then__returns_false() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
-            MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(SCMHeadOrigin.DEFAULT, 1, "master",
-                    ChangeRequestCheckoutStrategy.MERGE, true);
+            MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(
+                    SCMHeadOrigin.DEFAULT, 1, "master", ChangeRequestCheckoutStrategy.MERGE, true);
             assertThat(
                     new NamedBranchBuildStrategyImpl(Collections.<NamedBranchBuildStrategyImpl.NameFilter>singletonList(
-                            new NamedBranchBuildStrategyImpl.RegexNameFilter("^.*$", false))
-                    ).isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"),
-                            head,
-                            new MockChangeRequestSCMRevision(head,
-                                    new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
-                            null,
-                            null,
-                            null
-                    ),
-                    is(false)
-            );
+                                    new NamedBranchBuildStrategyImpl.RegexNameFilter("^.*$", false)))
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockChangeRequestSCMRevision(
+                                            head, new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(false));
         }
     }
 
@@ -108,17 +102,15 @@ public class NamedBranchBuildStrategyImplTest {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
                     new NamedBranchBuildStrategyImpl(Collections.<NamedBranchBuildStrategyImpl.NameFilter>singletonList(
-                            new NamedBranchBuildStrategyImpl.ExactNameFilter("feature/1", false))
-                    ).isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"),
-                            head,
-                            new MockSCMRevision(head, "dummy"),
-                            null,
-                            null,
-                            null
-                    ),
-                    is(false)
-            );
+                                    new NamedBranchBuildStrategyImpl.ExactNameFilter("feature/1", false)))
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockSCMRevision(head, "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(false));
         }
     }
 
@@ -128,21 +120,19 @@ public class NamedBranchBuildStrategyImplTest {
             MockSCMHead head = new MockSCMHead("feature");
             assertThat(
                     new NamedBranchBuildStrategyImpl(Arrays.<NamedBranchBuildStrategyImpl.NameFilter>asList(
-                            new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
-                            new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
-                            new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
-                            new NamedBranchBuildStrategyImpl.WildcardsNameFilter("feature/*", "feature",false)
-                    )
-                    ).isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"),
-                            head,
-                            new MockSCMRevision(head, "dummy"),
-                            null,
-                            null,
-                            null
-                    ),
-                    is(false)
-            );
+                                    new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
+                                    new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
+                                    new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
+                                    new NamedBranchBuildStrategyImpl.WildcardsNameFilter(
+                                            "feature/*", "feature", false)))
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockSCMRevision(head, "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(false));
         }
     }
 
@@ -152,21 +142,19 @@ public class NamedBranchBuildStrategyImplTest {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
                     new NamedBranchBuildStrategyImpl(Arrays.<NamedBranchBuildStrategyImpl.NameFilter>asList(
-                            new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
-                            new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
-                            new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
-                            new NamedBranchBuildStrategyImpl.WildcardsNameFilter("feature/*", "feature",false)
-                    )
-                    ).isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"),
-                            head,
-                            new MockSCMRevision(head, "dummy"),
-                            null,
-                            null,
-                            null
-                    ),
-                    is(true)
-            );
+                                    new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
+                                    new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
+                                    new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
+                                    new NamedBranchBuildStrategyImpl.WildcardsNameFilter(
+                                            "feature/*", "feature", false)))
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockSCMRevision(head, "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(true));
         }
     }
 
@@ -176,22 +164,19 @@ public class NamedBranchBuildStrategyImplTest {
             MockSCMHead head = new MockSCMHead("feature/1");
             assertThat(
                     new NamedBranchBuildStrategyImpl(Arrays.<NamedBranchBuildStrategyImpl.NameFilter>asList(
-                            new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
-                            new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
-                            new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
-                            new NamedBranchBuildStrategyImpl.WildcardsNameFilter("feature/*", "feature",false)
-                    )
-                    ).isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"),
-                            head,
-                            new MockSCMRevision(head, "dummy"),
-                            null,
-                            null,
-                            null
-                    ),
-                    is(true)
-            );
+                                    new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
+                                    new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
+                                    new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
+                                    new NamedBranchBuildStrategyImpl.WildcardsNameFilter(
+                                            "feature/*", "feature", false)))
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockSCMRevision(head, "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(true));
         }
     }
-
 }

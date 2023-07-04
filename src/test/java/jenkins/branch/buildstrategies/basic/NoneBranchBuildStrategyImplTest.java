@@ -23,8 +23,14 @@
  */
 package jenkins.branch.buildstrategies.basic;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.fail;
+
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.model.TaskListener;
+import java.util.Arrays;
+import java.util.Collections;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.SCMRevision;
@@ -35,62 +41,62 @@ import jenkins.scm.impl.mock.MockSCMRevision;
 import jenkins.scm.impl.mock.MockSCMSource;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
-
 public class NoneBranchBuildStrategyImplTest {
     @Test
     public void given__no_strategies__when__isAutomaticBuild__then__returns_false() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
-                new NoneBranchBuildStrategyImpl(Collections.emptyList()
-                ).isAutomaticBuild(
-                    new MockSCMSource(c, "dummy"),
-                    head,
-                    new MockSCMRevision(head, "dummy"),
-                    null,
-                    null,
-                    null
-                ),
-                is(false)
-            );
+                    new NoneBranchBuildStrategyImpl(Collections.emptyList())
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockSCMRevision(head, "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(false));
         }
     }
-
 
     @Test
     public void given__true_strategies__when__isAutomaticBuild__then__returns_false() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
-                new NoneBranchBuildStrategyImpl(Arrays.asList(
-                    new BranchBuildStrategy() {
-                        @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
-                            return true;
-                        }
-                    },
-                    new BranchBuildStrategy() {
-                        @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
-                            return true;
-                        }
-                    }
-                )).isAutomaticBuild(
-                    new MockSCMSource(c, "dummy"),
-                    head,
-                    new MockSCMRevision(head, "dummy"),
-                    null,
-                    null,
-                    null
-                ),
-                is(false)
-            );
+                    new NoneBranchBuildStrategyImpl(Arrays.asList(
+                                    new BranchBuildStrategy() {
+                                        @Override
+                                        public boolean isAutomaticBuild(
+                                                @NonNull SCMSource source,
+                                                @NonNull SCMHead head,
+                                                @NonNull SCMRevision currRevision,
+                                                SCMRevision lastBuiltRevision,
+                                                SCMRevision lastSeenRevision,
+                                                TaskListener taskListener) {
+                                            return true;
+                                        }
+                                    },
+                                    new BranchBuildStrategy() {
+                                        @Override
+                                        public boolean isAutomaticBuild(
+                                                @NonNull SCMSource source,
+                                                @NonNull SCMHead head,
+                                                @NonNull SCMRevision currRevision,
+                                                SCMRevision lastBuiltRevision,
+                                                SCMRevision lastSeenRevision,
+                                                TaskListener taskListener) {
+                                            return true;
+                                        }
+                                    }))
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockSCMRevision(head, "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(false));
         }
     }
 
@@ -99,63 +105,82 @@ public class NoneBranchBuildStrategyImplTest {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
-                new NoneBranchBuildStrategyImpl(Arrays.asList(
-                    new BranchBuildStrategy() {
-                        @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
-                            return false;
-                        }
-                    },
-                    new BranchBuildStrategy() {
-                        @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
-                            return false;
-                        }
-                    }
-                )).isAutomaticBuild(
-                    new MockSCMSource(c, "dummy"),
-                    head,
-                    new MockSCMRevision(head, "dummy"),
-                    null,
-                    null,
-                    null
-                ),
-                is(true)
-            );
+                    new NoneBranchBuildStrategyImpl(Arrays.asList(
+                                    new BranchBuildStrategy() {
+                                        @Override
+                                        public boolean isAutomaticBuild(
+                                                @NonNull SCMSource source,
+                                                @NonNull SCMHead head,
+                                                @NonNull SCMRevision currRevision,
+                                                SCMRevision lastBuiltRevision,
+                                                SCMRevision lastSeenRevision,
+                                                TaskListener taskListener) {
+                                            return false;
+                                        }
+                                    },
+                                    new BranchBuildStrategy() {
+                                        @Override
+                                        public boolean isAutomaticBuild(
+                                                @NonNull SCMSource source,
+                                                @NonNull SCMHead head,
+                                                @NonNull SCMRevision currRevision,
+                                                SCMRevision lastBuiltRevision,
+                                                SCMRevision lastSeenRevision,
+                                                TaskListener taskListener) {
+                                            return false;
+                                        }
+                                    }))
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockSCMRevision(head, "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(true));
         }
     }
 
-
     @Test
-    public void given__true_and_false_strategies__when__isAutomaticBuild__then__returns_false_with_short_circuit() throws Exception {
+    public void given__true_and_false_strategies__when__isAutomaticBuild__then__returns_false_with_short_circuit()
+            throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
-                new NoneBranchBuildStrategyImpl(Arrays.asList(
-                    new BranchBuildStrategy() {
-                        @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
-                            return true;
-                        }
-                    },
-                    new BranchBuildStrategy() {
-                        @Override
-                        public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision, SCMRevision lastBuiltRevision, SCMRevision lastSeenRevision, TaskListener taskListener) {
-                            fail("strategy evaluation must short circuit");
-                            return false;
-                        }
-                    }
-                )).isAutomaticBuild(
-                    new MockSCMSource(c, "dummy"),
-                    head,
-                    new MockSCMRevision(head, "dummy"),
-                    null,
-                    null,
-                    null
-                ),
-                is(false)
-            );
+                    new NoneBranchBuildStrategyImpl(Arrays.asList(
+                                    new BranchBuildStrategy() {
+                                        @Override
+                                        public boolean isAutomaticBuild(
+                                                @NonNull SCMSource source,
+                                                @NonNull SCMHead head,
+                                                @NonNull SCMRevision currRevision,
+                                                SCMRevision lastBuiltRevision,
+                                                SCMRevision lastSeenRevision,
+                                                TaskListener taskListener) {
+                                            return true;
+                                        }
+                                    },
+                                    new BranchBuildStrategy() {
+                                        @Override
+                                        public boolean isAutomaticBuild(
+                                                @NonNull SCMSource source,
+                                                @NonNull SCMHead head,
+                                                @NonNull SCMRevision currRevision,
+                                                SCMRevision lastBuiltRevision,
+                                                SCMRevision lastSeenRevision,
+                                                TaskListener taskListener) {
+                                            fail("strategy evaluation must short circuit");
+                                            return false;
+                                        }
+                                    }))
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockSCMRevision(head, "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(false));
         }
     }
-
 }

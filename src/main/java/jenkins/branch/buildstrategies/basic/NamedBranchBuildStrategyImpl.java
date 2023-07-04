@@ -24,12 +24,14 @@
 package jenkins.branch.buildstrategies.basic;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import hudson.model.TaskListener;
 import hudson.util.FormValidation;
+import hudson.util.LogTaskListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,9 +39,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import edu.umd.cs.findbugs.annotations.NonNull;
-
-import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -81,9 +80,17 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Deprecated
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision prevRevision) {
-        return isAutomaticBuild(source, head, currRevision, prevRevision, new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
+    public boolean isAutomaticBuild(
+            @NonNull SCMSource source,
+            @NonNull SCMHead head,
+            @NonNull SCMRevision currRevision,
+            @CheckForNull SCMRevision prevRevision) {
+        return isAutomaticBuild(
+                source,
+                head,
+                currRevision,
+                prevRevision,
+                new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
     }
 
     /**
@@ -91,17 +98,26 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Deprecated
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision prevRevision, @NonNull TaskListener taskListener) {
-        return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
+    public boolean isAutomaticBuild(
+            @NonNull SCMSource source,
+            @NonNull SCMHead head,
+            @NonNull SCMRevision currRevision,
+            @CheckForNull SCMRevision prevRevision,
+            @NonNull TaskListener taskListener) {
+        return isAutomaticBuild(source, head, currRevision, prevRevision, prevRevision, taskListener);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull TaskListener taskListener) {
+    public boolean isAutomaticBuild(
+            @NonNull SCMSource source,
+            @NonNull SCMHead head,
+            @NonNull SCMRevision currRevision,
+            @CheckForNull SCMRevision lastBuiltRevision,
+            @CheckForNull SCMRevision lastSeenRevision,
+            @NonNull TaskListener taskListener) {
         if (head instanceof ChangeRequestSCMHead) {
             return false;
         }
@@ -109,7 +125,7 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
             return false;
         }
         String name = head.getName();
-        for (NameFilter filter: filters) {
+        for (NameFilter filter : filters) {
             if (filter.isMatch(name)) {
                 return true;
             }
@@ -149,11 +165,8 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
 
     @Override
     public String toString() {
-        return "NamedBranchBuildStrategyImpl{" +
-                "filters=" + filters +
-                '}';
+        return "NamedBranchBuildStrategyImpl{" + "filters=" + filters + '}';
     }
-
 
     /**
      * Our descriptor.
@@ -171,7 +184,7 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
         }
     }
 
-    public static abstract class NameFilter extends AbstractDescribableImpl<NameFilter> {
+    public abstract static class NameFilter extends AbstractDescribableImpl<NameFilter> {
         public abstract boolean isMatch(@NonNull String name);
 
         @Override
@@ -184,13 +197,12 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
         public abstract String toString();
     }
 
-    public static abstract class NameFilterDescriptor extends Descriptor<NameFilter> {
-
-    }
+    public abstract static class NameFilterDescriptor extends Descriptor<NameFilter> {}
 
     public static class ExactNameFilter extends NameFilter {
         @NonNull
         private final String name;
+
         private final boolean caseSensitive;
 
         @DataBoundConstructor
@@ -239,10 +251,7 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
 
         @Override
         public String toString() {
-            return "ExactNameFilter{" +
-                    "name='" + name + '\'' +
-                    ", caseSensitive=" + caseSensitive +
-                    '}';
+            return "ExactNameFilter{" + "name='" + name + '\'' + ", caseSensitive=" + caseSensitive + '}';
         }
 
         @Symbol("exact")
@@ -254,12 +263,12 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
                 return Messages.NamedBranchBuildStrategyImpl_exactDisplayName();
             }
         }
-
     }
 
     public static class RegexNameFilter extends NameFilter {
         @NonNull
         private final String regex;
+
         private final boolean caseSensitive;
         private transient Pattern pattern;
 
@@ -313,10 +322,7 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
 
         @Override
         public String toString() {
-            return "RegexNameFilter{" +
-                    "regex=/" + regex + '/' +
-                    ", caseSensitive=" + caseSensitive +
-                    '}';
+            return "RegexNameFilter{" + "regex=/" + regex + '/' + ", caseSensitive=" + caseSensitive + '}';
         }
 
         @Symbol("regex")
@@ -344,20 +350,22 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
                 }
             }
         }
-
     }
 
     public static class WildcardsNameFilter extends NameFilter {
         @NonNull
         private final String includes;
+
         @NonNull
         private final String excludes;
+
         private final boolean caseSensitive;
         private transient Pattern includePattern;
         private transient Pattern excludePattern;
 
         @DataBoundConstructor
-        public WildcardsNameFilter(@CheckForNull String includes, @CheckForNull String excludes, boolean caseSensitive) {
+        public WildcardsNameFilter(
+                @CheckForNull String includes, @CheckForNull String excludes, boolean caseSensitive) {
             this.includes = StringUtils.defaultIfBlank(includes, "*");
             this.excludes = StringUtils.defaultIfBlank(excludes, "");
             this.caseSensitive = caseSensitive;
@@ -426,11 +434,10 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
 
         @Override
         public String toString() {
-            return "WildcardsNameFilter{" +
-                    "includes='" + includes + '\'' +
-                    ", excludes='" + excludes + '\'' +
-                    ", caseSensitive=" + caseSensitive +
-                    '}';
+            return "WildcardsNameFilter{" + "includes='"
+                    + includes + '\'' + ", excludes='"
+                    + excludes + '\'' + ", caseSensitive="
+                    + caseSensitive + '}';
         }
 
         /**
@@ -467,7 +474,5 @@ public class NamedBranchBuildStrategyImpl extends BranchBuildStrategy {
                 return Messages.NamedBranchBuildStrategyImpl_wildcardDisplayName();
             }
         }
-
     }
-
 }

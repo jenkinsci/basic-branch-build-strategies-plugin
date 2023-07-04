@@ -45,30 +45,34 @@ public class SkipInitialBuildOnFirstBranchIndexing extends BranchBuildStrategy {
     private static final Logger LOGGER = Logger.getLogger(SkipInitialBuildOnFirstBranchIndexing.class.getName());
 
     @DataBoundConstructor
-    public SkipInitialBuildOnFirstBranchIndexing() {
-
-    }
+    public SkipInitialBuildOnFirstBranchIndexing() {}
 
     /**
      * {@inheritDoc}
      */
     @Deprecated
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision prevRevision, TaskListener taskListener) {
-        return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
+    public boolean isAutomaticBuild(
+            @NonNull SCMSource source,
+            @NonNull SCMHead head,
+            @NonNull SCMRevision currRevision,
+            @CheckForNull SCMRevision prevRevision,
+            TaskListener taskListener) {
+        return isAutomaticBuild(source, head, currRevision, prevRevision, prevRevision, taskListener);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull TaskListener taskListener) {
-        LOGGER.log(Level.INFO, "lastSeenRevision: {0}, currRevision: {1}",
-                new Object[]{
-                    lastSeenRevision, currRevision
-                }
-        );
+    public boolean isAutomaticBuild(
+            @NonNull SCMSource source,
+            @NonNull SCMHead head,
+            @NonNull SCMRevision currRevision,
+            @CheckForNull SCMRevision lastBuiltRevision,
+            @CheckForNull SCMRevision lastSeenRevision,
+            @NonNull TaskListener taskListener) {
+        LOGGER.log(
+                Level.INFO, "lastSeenRevision: {0}, currRevision: {1}", new Object[] {lastSeenRevision, currRevision});
         if (lastSeenRevision != null && !lastSeenRevision.equals(currRevision)) {
             return true;
         }
@@ -88,7 +92,5 @@ public class SkipInitialBuildOnFirstBranchIndexing extends BranchBuildStrategy {
         public String getDisplayName() {
             return Messages.SkipInitialBuildOnFirstBranchIndexing_displayName();
         }
-
     }
-
 }
