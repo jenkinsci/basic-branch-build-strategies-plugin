@@ -4,6 +4,7 @@ This plugin provides some basic branch build strategies for use with https://plu
 
 For generic information about how to use the Basic Branch Build Strategies plugin, please see link:docs/user{outfilesuffix}[the user guide]
 
-For changes to the plugin see link:CHANGES{outfilesuffix}[the changelog]
+For changes to the plugin see https://github.com/jenkinsci/basic-branch-build-strategies-plugin/releases[GitHub releases].
+Previous changelog entries are available in the https://github.com/jenkinsci/basic-branch-build-strategies-plugin/blob/81.v05e333931c7d/CHANGES.adoc[changelog document].
 
 For information on contributing to this plugin see link:CONTRIBUTING.md[Contributor guidelines]
