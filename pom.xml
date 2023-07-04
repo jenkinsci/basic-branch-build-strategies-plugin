@@ -38,9 +38,6 @@
   <packaging>hpi</packaging>
 
   <name>Basic Branch Build Strategies Plugin</name>
-  <description>
-    This plugin provides some basic branch build strategies for use with Branch API based projects.
-  </description>
   <url>https://github.com/jenkinsci/basic-branch-build-strategies-plugin/blob/master/docs/user.adoc</url>
   <licenses>
     <license>
