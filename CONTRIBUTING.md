@@ -1,6 +1,7 @@
 # Contribution guidelines
 
 This project follows [SCM API's Contribution Guidelines](https://github.com/jenkinsci/scm-api-plugin/blob/master/CONTRIBUTING.md).
+Source code is formatted with `mvn spotless:apply`.
 
 # Developer Information
 
@@ -19,6 +20,14 @@ To build the plugin locally:
 mvn clean verify
 ```
 
+## Formatting
+
+To format the plugin source files:
+
+```
+mvn spotless:apply
+```
+
 ## Test local instance
 
 To test in a local Jenkins instance
@@ -26,4 +35,3 @@ To test in a local Jenkins instance
 ```
 mvn hpi:run
 ```
-

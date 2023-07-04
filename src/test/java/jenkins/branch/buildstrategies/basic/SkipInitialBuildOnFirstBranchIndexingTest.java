@@ -23,7 +23,13 @@
  */
 package jenkins.branch.buildstrategies.basic;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+
 import hudson.model.FreeStyleProject;
+import java.util.Collections;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchSource;
 import jenkins.branch.buildstrategies.basic.harness.BasicMultiBranchProject;
@@ -40,14 +46,6 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
-import java.util.Collections;
-
-import static org.hamcrest.Matchers.is;
-
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 public class SkipInitialBuildOnFirstBranchIndexingTest {
 
     /**
@@ -62,53 +60,46 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
-                    new SkipInitialBuildOnFirstBranchIndexing().isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"),
-                            head,
-                            new MockSCMRevision(head, "dummy"),
-                            null,
-                            null,
-                            null
-                    ),
-                    is(false)
-            );
+                    new SkipInitialBuildOnFirstBranchIndexing()
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockSCMRevision(head, "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(false));
         }
     }
 
     @Test
-    public void given__scm__lastSeenRevision__but__not__equal__to__currRevision__isAutomaticBuild__then__returns_true() throws Exception {
+    public void given__scm__lastSeenRevision__but__not__equal__to__currRevision__isAutomaticBuild__then__returns_true()
+            throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
-                    new SkipInitialBuildOnFirstBranchIndexing().isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"),
-                            head,
-                            new MockSCMRevision(head, "dummy"),
-                            null,
-                            new MockSCMRevision(head, "bar"),
-                            null
-                    ),
-                    is(true)
-            );
+                    new SkipInitialBuildOnFirstBranchIndexing()
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockSCMRevision(head, "dummy"),
+                                    null,
+                                    new MockSCMRevision(head, "bar"),
+                                    null),
+                    is(true));
         }
     }
 
     @Test
-    public void given__scm__lastSeenRevision__equal__to__currRevision__isAutomaticBuild__then__returns_false() throws Exception {
+    public void given__scm__lastSeenRevision__equal__to__currRevision__isAutomaticBuild__then__returns_false()
+            throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             MockSCMRevision revision = new MockSCMRevision(head, "dummy");
             assertThat(
-                    new SkipInitialBuildOnFirstBranchIndexing().isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"),
-                            head,
-                            revision,
-                            null,
-                            revision,
-                            null
-                    ),
-                    is(false)
-            );
+                    new SkipInitialBuildOnFirstBranchIndexing()
+                            .isAutomaticBuild(new MockSCMSource(c, "dummy"), head, revision, null, revision, null),
+                    is(false));
         }
     }
 
@@ -119,7 +110,8 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "project");
             prj.setCriteria(null);
             BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches()));
-            source.setBuildStrategies(Collections.<BranchBuildStrategy>singletonList(new SkipInitialBuildOnFirstBranchIndexing()));
+            source.setBuildStrategies(
+                    Collections.<BranchBuildStrategy>singletonList(new SkipInitialBuildOnFirstBranchIndexing()));
             prj.getSourcesList().add(source);
             fire(new MockSCMHeadEvent(SCMEvent.Type.CREATED, c, "foo", "master", c.getRevision("foo", "master")));
             FreeStyleProject master = prj.getItem("master");
@@ -139,7 +131,8 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
     }
 
     @Test
-    public void if__skipInitialBuildOnFirstBranchIndexing__is__disabled__first__branch__indexing__triggers__the__build() throws Exception {
+    public void if__skipInitialBuildOnFirstBranchIndexing__is__disabled__first__branch__indexing__triggers__the__build()
+            throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "my-project");
@@ -163,5 +156,4 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
         SCMEvents.awaitAll(watermark);
         j.waitUntilNoActivity();
     }
-
 }

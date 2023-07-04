@@ -23,6 +23,9 @@
  */
 package jenkins.branch.buildstrategies.basic;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 import jenkins.scm.api.SCMHeadOrigin;
 import jenkins.scm.api.mixin.ChangeRequestCheckoutStrategy;
 import jenkins.scm.impl.mock.MockChangeRequestSCMHead;
@@ -34,25 +37,21 @@ import jenkins.scm.impl.mock.MockSCMSource;
 import jenkins.scm.impl.mock.MockTagSCMHead;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 public class BranchBuildStrategyImplTest {
     @Test
     public void given__regular_head__when__isAutomaticBuild__then__returns_true() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
-                    new BranchBuildStrategyImpl().isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"),
-                            head,
-                            new MockSCMRevision(head, "dummy"),
-                            null,
-                            null,
-                            null
-                    ),
-                    is(true)
-            );
+                    new BranchBuildStrategyImpl()
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockSCMRevision(head, "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(true));
         }
     }
 
@@ -61,36 +60,34 @@ public class BranchBuildStrategyImplTest {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis());
             assertThat(
-                    new BranchBuildStrategyImpl().isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"),
-                            head,
-                            new MockSCMRevision(head, "dummy"),
-                            null,
-                            null,
-                            null
-                    ),
-                    is(false)
-            );
+                    new BranchBuildStrategyImpl()
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockSCMRevision(head, "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(false));
         }
     }
 
     @Test
     public void given__cr_head__when__isAutomaticBuild__then__returns_false() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
-            MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(SCMHeadOrigin.DEFAULT, 1, "master",
-                    ChangeRequestCheckoutStrategy.MERGE, true);
+            MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(
+                    SCMHeadOrigin.DEFAULT, 1, "master", ChangeRequestCheckoutStrategy.MERGE, true);
             assertThat(
-                    new BranchBuildStrategyImpl().isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"),
-                            head,
-                            new MockChangeRequestSCMRevision(head,
-                                    new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
-                            null,
-                            null,
-                            null
-                    ),
-                    is(false)
-            );
+                    new BranchBuildStrategyImpl()
+                            .isAutomaticBuild(
+                                    new MockSCMSource(c, "dummy"),
+                                    head,
+                                    new MockChangeRequestSCMRevision(
+                                            head, new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
+                                    null,
+                                    null,
+                                    null),
+                    is(false));
         }
     }
 }

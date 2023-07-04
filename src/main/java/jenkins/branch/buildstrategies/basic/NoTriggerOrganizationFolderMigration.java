@@ -27,19 +27,19 @@ public class NoTriggerOrganizationFolderMigration
     public void apply(OrganizationFolder folder, NoTriggerOrganizationFolderProperty property) {
         BulkChange bc = new BulkChange(folder);
         try {
-            folder.getBuildStrategies().add(
-                    new NamedBranchBuildStrategyImpl(
+            folder.getBuildStrategies()
+                    .add(new NamedBranchBuildStrategyImpl(
                             Collections.<NamedBranchBuildStrategyImpl.NameFilter>singletonList(
-                                    new NamedBranchBuildStrategyImpl.RegexNameFilter(property.getBranches(), true)
-                            )
-                    )
-            );
+                                    new NamedBranchBuildStrategyImpl.RegexNameFilter(property.getBranches(), true))));
             folder.getProperties().remove(property);
             try {
                 bc.commit();
             } catch (IOException e) {
-                LOGGER.log(Level.WARNING, "Could not persist configuration migration for "
-                        + folder.getFullName() + ", will retry next restart", e);
+                LOGGER.log(
+                        Level.WARNING,
+                        "Could not persist configuration migration for " + folder.getFullName()
+                                + ", will retry next restart",
+                        e);
             }
         } catch (RuntimeException | Error e) {
             bc.abort();

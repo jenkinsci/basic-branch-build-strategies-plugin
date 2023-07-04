@@ -27,12 +27,11 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
+import hudson.model.TaskListener;
+import hudson.util.LogTaskListener;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import hudson.model.TaskListener;
-import hudson.util.LogTaskListener;
 import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchBuildStrategyDescriptor;
 import jenkins.scm.api.SCMHead;
@@ -65,8 +64,7 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
         this(
                 TimeUnit.DAYS,
                 Long.parseLong(StringUtils.defaultIfBlank(atLeastDays, "-1")),
-                Long.parseLong(StringUtils.defaultIfBlank(atMostDays, "-1"))
-        );
+                Long.parseLong(StringUtils.defaultIfBlank(atMostDays, "-1")));
     }
 
     /**
@@ -118,9 +116,17 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Deprecated
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision prevRevision) {
-        return isAutomaticBuild(source, head, currRevision, prevRevision, new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
+    public boolean isAutomaticBuild(
+            @NonNull SCMSource source,
+            @NonNull SCMHead head,
+            @NonNull SCMRevision currRevision,
+            @CheckForNull SCMRevision prevRevision) {
+        return isAutomaticBuild(
+                source,
+                head,
+                currRevision,
+                prevRevision,
+                new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
     }
 
     /**
@@ -128,17 +134,26 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Deprecated
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision prevRevision, @NonNull  TaskListener taskListener) {
-        return isAutomaticBuild(source,head, currRevision, prevRevision, prevRevision, taskListener);
+    public boolean isAutomaticBuild(
+            @NonNull SCMSource source,
+            @NonNull SCMHead head,
+            @NonNull SCMRevision currRevision,
+            @CheckForNull SCMRevision prevRevision,
+            @NonNull TaskListener taskListener) {
+        return isAutomaticBuild(source, head, currRevision, prevRevision, prevRevision, taskListener);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isAutomaticBuild(@NonNull SCMSource source, @NonNull SCMHead head, @NonNull SCMRevision currRevision,
-                                    @CheckForNull SCMRevision lastBuiltRevision, @CheckForNull SCMRevision lastSeenRevision, @NonNull  TaskListener taskListener) {
+    public boolean isAutomaticBuild(
+            @NonNull SCMSource source,
+            @NonNull SCMHead head,
+            @NonNull SCMRevision currRevision,
+            @CheckForNull SCMRevision lastBuiltRevision,
+            @CheckForNull SCMRevision lastSeenRevision,
+            @NonNull TaskListener taskListener) {
         if (!(head instanceof TagSCMHead)) {
             return false;
         }
@@ -148,7 +163,7 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
                 // our advice?
                 return false;
             }
-            long tagAge = System.currentTimeMillis() - ((TagSCMHead)head).getTimestamp();
+            long tagAge = System.currentTimeMillis() - ((TagSCMHead) head).getTimestamp();
             if (atMostMillis >= 0L && tagAge > atMostMillis) {
                 return false;
             }
@@ -194,10 +209,9 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
      */
     @Override
     public String toString() {
-        return "TagBuildStrategyImpl{" +
-                "atLeast=" + (atLeastMillis >= 0L ? Util.getPastTimeString(atLeastMillis) : "n/a") +
-                ", atMost=" + (atMostMillis >= 0L ? Util.getPastTimeString(atMostMillis) : "n/a")+
-                '}';
+        return "TagBuildStrategyImpl{" + "atLeast="
+                + (atLeastMillis >= 0L ? Util.getPastTimeString(atLeastMillis) : "n/a") + ", atMost="
+                + (atMostMillis >= 0L ? Util.getPastTimeString(atMostMillis) : "n/a") + '}';
     }
 
     /**

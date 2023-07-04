@@ -39,8 +39,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 public class BasicBranchProjectFactory extends BranchProjectFactory<FreeStyleProject, FreeStyleBuild> {
 
     @DataBoundConstructor
-    public BasicBranchProjectFactory() {
-    }
+    public BasicBranchProjectFactory() {}
 
     @Override
     public FreeStyleProject newInstance(Branch branch) {
@@ -83,7 +82,6 @@ public class BasicBranchProjectFactory extends BranchProjectFactory<FreeStylePro
         return project;
     }
 
-
     @Override
     public boolean isProject(Item item) {
         return item instanceof FreeStyleProject
@@ -102,7 +100,5 @@ public class BasicBranchProjectFactory extends BranchProjectFactory<FreeStylePro
         public String getDisplayName() {
             return "BasicBranchProjectFactory";
         }
-
     }
-
 }
