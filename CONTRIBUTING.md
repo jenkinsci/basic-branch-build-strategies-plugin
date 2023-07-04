@@ -8,7 +8,8 @@ This project follows [SCM API's Contribution Guidelines](https://github.com/jenk
 
 The following build environment is required to build this plugin
 
-- `java-1.8` and `maven-3.5.2`
+- Java 11 or Java 17
+- Apache Maven 3.9.3 or later
 
 ## Build
 
@@ -16,14 +17,6 @@ To build the plugin locally:
 
 ```
 mvn clean verify
-```
-
-## Release
-
-To release the plugin:
-
-```
-mvn release:prepare release:perform -B
 ```
 
 ## Test local instance
