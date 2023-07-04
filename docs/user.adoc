@@ -4,11 +4,11 @@ This document provides the user guide to the functionality provided by the Basic
 
 === Background
 
-The http://wiki.jenkins.io/display/JENKINS/Branch+API+Plugin[Branch API] plugin provides an extension point that allows control over whether to build a branch (or branch like things such as change requests and tags) whenever it is discovered initially or a change from the previous revision has been detected.
+The https://plugins.jenkins.io/branch-api/[Branch API] plugin provides an extension point that allows control over whether to build a branch (or branch like things such as change requests and tags) whenever it is discovered initially or a change from the previous revision has been detected.
 By design, the plugin does not provide any concrete implementations of this extension point, leaving the actual implementation to extension plugins.
-In the absence of any configured `BranchBuildStrategy` the default for the http://wiki.jenkins.io/display/JENKINS/Branch+API+Plugin[Branch API] plugin is to build everything except tags.
+In the absence of any configured `BranchBuildStrategy` the default for the https://plugins.jenkins.io/branch-api/[Branch API] plugin is to build everything except tags.
 
-This plugin is an extension plugin for http://wiki.jenkins.io/display/JENKINS/Branch+API+Plugin[Branch API] that provides some basic `BranchBuildStrategy` implementations.
+This plugin is an extension plugin for https://plugins.jenkins.io/branch-api/[Branch API] that provides some basic `BranchBuildStrategy` implementations.
 
 === Strategies
 
