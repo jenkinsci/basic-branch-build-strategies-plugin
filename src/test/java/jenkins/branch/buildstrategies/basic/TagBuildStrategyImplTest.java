@@ -25,6 +25,7 @@ package jenkins.branch.buildstrategies.basic;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 import java.util.concurrent.TimeUnit;
 import jenkins.scm.api.SCMHeadOrigin;
@@ -46,9 +47,13 @@ public class TagBuildStrategyImplTest {
             TagBuildStrategyImpl tagBuildStrategy = new TagBuildStrategyImpl(null, null);
             assertThat(
                     tagBuildStrategy.isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null, null, null),
+                            new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null),
                     is(false));
             assertThat(tagBuildStrategy.toString(), is("TagBuildStrategyImpl{atLeast=n/a, atMost=n/a}"));
+            assertThat(tagBuildStrategy.hashCode(), is(tagBuildStrategy.hashCode())); // same object has same hash
+            assertThat(tagBuildStrategy, is(tagBuildStrategy)); // same object is equal to itself
+            assertThat(tagBuildStrategy, is(not(head))); // object of different class is not equal
+            assertThat(tagBuildStrategy.getAtLeastMillis(), is(tagBuildStrategy.getAtMostMillis()));
         }
     }
 
@@ -59,7 +64,7 @@ public class TagBuildStrategyImplTest {
             TagBuildStrategyImpl tagBuildStrategy = new TagBuildStrategyImpl(null, null);
             assertThat(
                     tagBuildStrategy.isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null, null, null),
+                            new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null, null),
                     is(true));
             assertThat(tagBuildStrategy.toString(), is("TagBuildStrategyImpl{atLeast=n/a, atMost=n/a}"));
         }
