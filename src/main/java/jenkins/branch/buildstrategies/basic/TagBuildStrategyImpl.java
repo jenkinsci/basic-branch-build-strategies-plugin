@@ -210,8 +210,8 @@ public class TagBuildStrategyImpl extends BranchBuildStrategy {
     @Override
     public String toString() {
         return "TagBuildStrategyImpl{" + "atLeast="
-                + (atLeastMillis >= 0L ? Util.getPastTimeString(atLeastMillis) : "n/a") + ", atMost="
-                + (atMostMillis >= 0L ? Util.getPastTimeString(atMostMillis) : "n/a") + '}';
+                + (atLeastMillis >= 0L ? Util.getTimeSpanString(atLeastMillis) : "n/a") + ", atMost="
+                + (atMostMillis >= 0L ? Util.getTimeSpanString(atMostMillis) : "n/a") + '}';
     }
 
     /**
