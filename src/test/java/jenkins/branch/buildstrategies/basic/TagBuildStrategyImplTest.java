@@ -195,17 +195,11 @@ public class TagBuildStrategyImplTest {
         try (MockSCMController c = MockSCMController.create()) {
             MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(
                     SCMHeadOrigin.DEFAULT, 1, "master", ChangeRequestCheckoutStrategy.MERGE, true);
-            assertThat(
-                    new TagBuildStrategyImpl(null, null)
-                            .isAutomaticBuild(
-                                    new MockSCMSource(c, "dummy"),
-                                    head,
-                                    new MockChangeRequestSCMRevision(
-                                            head, new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy"),
-                                    null,
-                                    null,
-                                    null),
-                    is(false));
+            MockChangeRequestSCMRevision revision = new MockChangeRequestSCMRevision(
+                    head, new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy");
+            TagBuildStrategyImpl strategy = new TagBuildStrategyImpl(null, null);
+            assertThat(strategy.isAutomaticBuild(new MockSCMSource(c, "dummy"), head, revision, null), is(false));
+            assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=n/a, atMost=n/a}"));
         }
     }
 }
