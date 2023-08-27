@@ -44,16 +44,16 @@ public class TagBuildStrategyImplTest {
     public void given__regular_head__when__isAutomaticBuild__then__returns_false() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
-            TagBuildStrategyImpl tagBuildStrategy = new TagBuildStrategyImpl(null, null);
+            TagBuildStrategyImpl strategy = new TagBuildStrategyImpl(null, null);
             assertThat(
-                    tagBuildStrategy.isAutomaticBuild(
+                    strategy.isAutomaticBuild(
                             new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null),
                     is(false));
-            assertThat(tagBuildStrategy.toString(), is("TagBuildStrategyImpl{atLeast=n/a, atMost=n/a}"));
-            assertThat(tagBuildStrategy.hashCode(), is(tagBuildStrategy.hashCode())); // same object has same hash
-            assertThat(tagBuildStrategy, is(tagBuildStrategy)); // same object is equal to itself
-            assertThat(tagBuildStrategy, is(not(head))); // object of different class is not equal
-            assertThat(tagBuildStrategy.getAtLeastMillis(), is(tagBuildStrategy.getAtMostMillis()));
+            assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=n/a, atMost=n/a}"));
+            assertThat(strategy.hashCode(), is(strategy.hashCode())); // same object has same hash
+            assertThat(strategy, is(strategy)); // same object is equal to itself
+            assertThat(strategy, is(not(head))); // object of different class is not equal
+            assertThat(strategy.getAtLeastMillis(), is(strategy.getAtMostMillis()));
         }
     }
 
@@ -61,12 +61,12 @@ public class TagBuildStrategyImplTest {
     public void given__tag_head__when__isAutomaticBuild__then__returns_true() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis());
-            TagBuildStrategyImpl tagBuildStrategy = new TagBuildStrategyImpl(null, null);
+            TagBuildStrategyImpl strategy = new TagBuildStrategyImpl(null, null);
             assertThat(
-                    tagBuildStrategy.isAutomaticBuild(
+                    strategy.isAutomaticBuild(
                             new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null, null),
                     is(true));
-            assertThat(tagBuildStrategy.toString(), is("TagBuildStrategyImpl{atLeast=n/a, atMost=n/a}"));
+            assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=n/a, atMost=n/a}"));
         }
     }
 
@@ -75,12 +75,12 @@ public class TagBuildStrategyImplTest {
             throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis());
-            TagBuildStrategyImpl tagBuildStrategy = new TagBuildStrategyImpl(null, "1");
+            TagBuildStrategyImpl strategy = new TagBuildStrategyImpl(null, "1");
             assertThat(
-                    tagBuildStrategy.isAutomaticBuild(
+                    strategy.isAutomaticBuild(
                             new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null, null, null),
                     is(true));
-            assertThat(tagBuildStrategy.toString(), is("TagBuildStrategyImpl{atLeast=n/a, atMost=1 day 0 hr}"));
+            assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=n/a, atMost=1 day 0 hr}"));
         }
     }
 
@@ -89,12 +89,12 @@ public class TagBuildStrategyImplTest {
             throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(2));
-            TagBuildStrategyImpl tagBuildStrategy = new TagBuildStrategyImpl(null, "1");
+            TagBuildStrategyImpl strategy = new TagBuildStrategyImpl(null, "1");
             assertThat(
-                    tagBuildStrategy.isAutomaticBuild(
+                    strategy.isAutomaticBuild(
                             new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null),
                     is(false));
-            assertThat(tagBuildStrategy.toString(), is("TagBuildStrategyImpl{atLeast=n/a, atMost=1 day 0 hr}"));
+            assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=n/a, atMost=1 day 0 hr}"));
         }
     }
 
@@ -103,12 +103,12 @@ public class TagBuildStrategyImplTest {
             throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis());
-            TagBuildStrategyImpl tagBuildStrategy = new TagBuildStrategyImpl("1", null);
+            TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("1", null);
             assertThat(
-                    tagBuildStrategy.isAutomaticBuild(
+                    strategy.isAutomaticBuild(
                             new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null, null),
                     is(false));
-            assertThat(tagBuildStrategy.toString(), is("TagBuildStrategyImpl{atLeast=1 day 0 hr, atMost=n/a}"));
+            assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=1 day 0 hr, atMost=n/a}"));
         }
     }
 
@@ -117,12 +117,12 @@ public class TagBuildStrategyImplTest {
             throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(2));
-            TagBuildStrategyImpl tagBuildStrategy = new TagBuildStrategyImpl("1", null);
+            TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("1", null);
             assertThat(
-                    tagBuildStrategy.isAutomaticBuild(
+                    strategy.isAutomaticBuild(
                             new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null, null, null),
                     is(true));
-            assertThat(tagBuildStrategy.toString(), is("TagBuildStrategyImpl{atLeast=1 day 0 hr, atMost=n/a}"));
+            assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=1 day 0 hr, atMost=n/a}"));
         }
     }
 
@@ -133,9 +133,9 @@ public class TagBuildStrategyImplTest {
             for (int offset = 0; offset <= 4; offset++) {
                 MockSCMHead head =
                         new MockTagSCMHead("master", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(offset));
-                TagBuildStrategyImpl tagBuildStrategy = new TagBuildStrategyImpl("3", "1");
+                TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("3", "1");
                 assertThat(
-                        tagBuildStrategy.isAutomaticBuild(
+                        strategy.isAutomaticBuild(
                                 new MockSCMSource(c, "dummy"),
                                 head,
                                 new MockSCMRevision(head, "dummy"),
@@ -143,9 +143,7 @@ public class TagBuildStrategyImplTest {
                                 null,
                                 null),
                         is(false));
-                assertThat(
-                        tagBuildStrategy.toString(),
-                        is("TagBuildStrategyImpl{atLeast=3 days 0 hr, atMost=1 day 0 hr}"));
+                assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=3 days 0 hr, atMost=1 day 0 hr}"));
             }
         }
     }
@@ -155,12 +153,12 @@ public class TagBuildStrategyImplTest {
             throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis());
-            TagBuildStrategyImpl tagBuildStrategy = new TagBuildStrategyImpl("1", "3");
+            TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("1", "3");
             assertThat(
-                    tagBuildStrategy.isAutomaticBuild(
+                    strategy.isAutomaticBuild(
                             new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null),
                     is(false));
-            assertThat(tagBuildStrategy.toString(), is("TagBuildStrategyImpl{atLeast=1 day 0 hr, atMost=3 days 0 hr}"));
+            assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=1 day 0 hr, atMost=3 days 0 hr}"));
         }
     }
 
@@ -169,12 +167,12 @@ public class TagBuildStrategyImplTest {
             throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(2));
-            TagBuildStrategyImpl tagBuildStrategy = new TagBuildStrategyImpl("1", "3");
+            TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("1", "3");
             assertThat(
-                    tagBuildStrategy.isAutomaticBuild(
+                    strategy.isAutomaticBuild(
                             new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null, null),
                     is(true));
-            assertThat(tagBuildStrategy.toString(), is("TagBuildStrategyImpl{atLeast=1 day 0 hr, atMost=3 days 0 hr}"));
+            assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=1 day 0 hr, atMost=3 days 0 hr}"));
         }
     }
 
@@ -183,12 +181,12 @@ public class TagBuildStrategyImplTest {
             throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(4));
-            TagBuildStrategyImpl tagBuildStrategy = new TagBuildStrategyImpl("1", "3");
+            TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("1", "3");
             assertThat(
-                    tagBuildStrategy.isAutomaticBuild(
+                    strategy.isAutomaticBuild(
                             new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null, null, null),
                     is(false));
-            assertThat(tagBuildStrategy.toString(), is("TagBuildStrategyImpl{atLeast=1 day 0 hr, atMost=3 days 0 hr}"));
+            assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=1 day 0 hr, atMost=3 days 0 hr}"));
         }
     }
 
