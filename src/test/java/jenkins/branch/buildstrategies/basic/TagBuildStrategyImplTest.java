@@ -136,12 +136,7 @@ public class TagBuildStrategyImplTest {
                 TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("3", "1");
                 assertThat(
                         strategy.isAutomaticBuild(
-                                new MockSCMSource(c, "dummy"),
-                                head,
-                                new MockSCMRevision(head, "dummy"),
-                                null,
-                                null,
-                                null),
+                                new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null),
                         is(false));
                 assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=3 days 0 hr, atMost=1 day 0 hr}"));
             }
@@ -156,7 +151,7 @@ public class TagBuildStrategyImplTest {
             TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("1", "3");
             assertThat(
                     strategy.isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null),
+                            new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null, null),
                     is(false));
             assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=1 day 0 hr, atMost=3 days 0 hr}"));
         }
@@ -170,7 +165,7 @@ public class TagBuildStrategyImplTest {
             TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("1", "3");
             assertThat(
                     strategy.isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null, null),
+                            new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null, null, null),
                     is(true));
             assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=1 day 0 hr, atMost=3 days 0 hr}"));
         }
@@ -184,7 +179,7 @@ public class TagBuildStrategyImplTest {
             TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("1", "3");
             assertThat(
                     strategy.isAutomaticBuild(
-                            new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null, null, null),
+                            new MockSCMSource(c, "dummy"), head, new MockSCMRevision(head, "dummy"), null),
                     is(false));
             assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=1 day 0 hr, atMost=3 days 0 hr}"));
         }
@@ -198,7 +193,7 @@ public class TagBuildStrategyImplTest {
             MockChangeRequestSCMRevision revision = new MockChangeRequestSCMRevision(
                     head, new MockSCMRevision(new MockSCMHead("master"), "dummy"), "dummy");
             TagBuildStrategyImpl strategy = new TagBuildStrategyImpl(null, null);
-            assertThat(strategy.isAutomaticBuild(new MockSCMSource(c, "dummy"), head, revision, null), is(false));
+            assertThat(strategy.isAutomaticBuild(new MockSCMSource(c, "dummy"), head, revision, null, null), is(false));
             assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=n/a, atMost=n/a}"));
         }
     }
