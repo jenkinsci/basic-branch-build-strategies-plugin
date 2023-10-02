@@ -39,6 +39,7 @@ import jenkins.scm.impl.mock.MockSCMHead;
 import jenkins.scm.impl.mock.MockSCMRevision;
 import jenkins.scm.impl.mock.MockSCMSource;
 import jenkins.scm.impl.mock.MockTagSCMHead;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 public class ChangeRequestBuildStrategyImplTest {
@@ -253,5 +254,12 @@ public class ChangeRequestBuildStrategyImplTest {
                                     null),
                     is(false));
         }
+    }
+
+    @Test
+    public void equalsContract() {
+        EqualsVerifier.forClass(ChangeRequestBuildStrategyImpl.class)
+                .usingGetClass()
+                .verify();
     }
 }

@@ -108,6 +108,12 @@
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>structs</artifactId>
     </dependency>
+    <dependency>
+      <groupId>nl.jqno.equalsverifier</groupId>
+      <artifactId>equalsverifier</artifactId>
+      <version>3.15.2</version>
+      <scope>test</scope>
+    </dependency>
     <!-- jenkins dependencies -->
     <!-- test dependencies -->
     <dependency>

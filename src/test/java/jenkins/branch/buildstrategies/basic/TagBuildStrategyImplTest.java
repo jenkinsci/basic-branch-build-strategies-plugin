@@ -37,6 +37,7 @@ import jenkins.scm.impl.mock.MockSCMHead;
 import jenkins.scm.impl.mock.MockSCMRevision;
 import jenkins.scm.impl.mock.MockSCMSource;
 import jenkins.scm.impl.mock.MockTagSCMHead;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 public class TagBuildStrategyImplTest {
@@ -196,5 +197,10 @@ public class TagBuildStrategyImplTest {
             assertThat(strategy.isAutomaticBuild(new MockSCMSource(c, "dummy"), head, revision, null, null), is(false));
             assertThat(strategy.toString(), is("TagBuildStrategyImpl{atLeast=n/a, atMost=n/a}"));
         }
+    }
+
+    @Test
+    public void equalsContract() {
+        EqualsVerifier.forClass(TagBuildStrategyImpl.class).usingGetClass().verify();
     }
 }

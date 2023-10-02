@@ -39,6 +39,7 @@ import jenkins.scm.impl.mock.MockSCMController;
 import jenkins.scm.impl.mock.MockSCMHead;
 import jenkins.scm.impl.mock.MockSCMRevision;
 import jenkins.scm.impl.mock.MockSCMSource;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 public class NoneBranchBuildStrategyImplTest {
@@ -182,5 +183,12 @@ public class NoneBranchBuildStrategyImplTest {
                                     null),
                     is(false));
         }
+    }
+
+    @Test
+    public void equalsContract() {
+        EqualsVerifier.forClass(NoneBranchBuildStrategyImpl.class)
+                .usingGetClass()
+                .verify();
     }
 }
