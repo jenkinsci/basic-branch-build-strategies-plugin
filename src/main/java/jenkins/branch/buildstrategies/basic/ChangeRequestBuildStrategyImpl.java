@@ -180,7 +180,8 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
 
         ChangeRequestBuildStrategyImpl that = (ChangeRequestBuildStrategyImpl) o;
 
-        return ignoreTargetOnlyChanges == that.ignoreTargetOnlyChanges;
+        return ignoreUntrustedChanges == that.ignoreUntrustedChanges
+                && ignoreTargetOnlyChanges == that.ignoreTargetOnlyChanges;
     }
 
     /**
