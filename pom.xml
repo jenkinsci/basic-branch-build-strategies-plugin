@@ -28,7 +28,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>4.88</version>
+    <version>5.1</version>
     <relativePath />
   </parent>
 
@@ -77,8 +77,10 @@
     <changelist>999999-SNAPSHOT</changelist>
     <gitHubRepo>jenkinsci/basic-branch-build-strategies-plugin</gitHubRepo>
     <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
-    <jenkins.baseline>2.440</jenkins.baseline>
-    <jenkins.version>${jenkins.baseline}.3</jenkins.version>
+    <jenkins.baseline>2.462</jenkins.baseline>
+    <!-- TODO Replace with the standard jenkins.baseline references after LTS requires Java 17  -->
+    <!-- <jenkins.version>${jenkins.baseline}.1</jenkins.version> -->
+    <jenkins.version>2.479</jenkins.version>
     <spotbugs.effort>Max</spotbugs.effort>
     <spotbugs.threshold>Low</spotbugs.threshold>
     <spotless.check.skip>false</spotless.check.skip>
@@ -104,6 +106,8 @@
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>scm-api</artifactId>
+      <!-- TODO: Remove when this version is in plugin BOM -->
+      <version>698.v8e3b_c788f0a_6</version>
     </dependency>
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
@@ -120,6 +124,8 @@
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>scm-api</artifactId>
+      <!-- TODO: Remove when this version is in plugin BOM -->
+      <version>698.v8e3b_c788f0a_6</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
