@@ -106,8 +106,6 @@
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>scm-api</artifactId>
-      <!-- TODO: Remove when this version is in plugin BOM -->
-      <version>698.v8e3b_c788f0a_6</version>
     </dependency>
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
@@ -124,8 +122,6 @@
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>scm-api</artifactId>
-      <!-- TODO: Remove when this version is in plugin BOM -->
-      <version>698.v8e3b_c788f0a_6</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
