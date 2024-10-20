@@ -144,10 +144,9 @@ public class ChangeRequestBuildStrategyImpl extends BranchBuildStrategy {
             return false;
         }
         if (ignoreTargetOnlyChanges
-                && currRevision instanceof ChangeRequestSCMRevision
-                && lastBuiltRevision instanceof ChangeRequestSCMRevision) {
-            ChangeRequestSCMRevision<?> curr = (ChangeRequestSCMRevision<?>) currRevision;
-            if (curr.isMerge() && curr.equivalent((ChangeRequestSCMRevision<?>) lastBuiltRevision)) {
+                && currRevision instanceof ChangeRequestSCMRevision<?> curr
+                && lastBuiltRevision instanceof ChangeRequestSCMRevision<?> revision) {
+            if (curr.isMerge() && curr.equivalent(revision)) {
                 return false;
             }
         }
