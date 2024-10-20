@@ -84,8 +84,7 @@ public class BasicBranchProjectFactory extends BranchProjectFactory<FreeStylePro
 
     @Override
     public boolean isProject(Item item) {
-        return item instanceof FreeStyleProject
-                && ((FreeStyleProject) item).getProperty(BasicBranchProperty.class) != null;
+        return item instanceof FreeStyleProject fsp && fsp.getProperty(BasicBranchProperty.class) != null;
     }
 
     @Extension
