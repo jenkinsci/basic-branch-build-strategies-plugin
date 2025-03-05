@@ -37,15 +37,16 @@ import jenkins.scm.impl.mock.MockSCMHead;
 import jenkins.scm.impl.mock.MockSCMRevision;
 import jenkins.scm.impl.mock.MockSCMSource;
 import jenkins.scm.impl.mock.MockTagSCMHead;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class NamedBranchBuildStrategyImplTest {
+class NamedBranchBuildStrategyImplTest {
+
     @Test
-    public void given__regular_head__when__isAutomaticBuild__then__returns_true() throws Exception {
+    void given__regular_head__when__isAutomaticBuild__then__returns_true() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
-                    new NamedBranchBuildStrategyImpl(Collections.<NamedBranchBuildStrategyImpl.NameFilter>singletonList(
+                    new NamedBranchBuildStrategyImpl(Collections.singletonList(
                                     new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false)))
                             .isAutomaticBuild(
                                     new MockSCMSource(c, "dummy"),
@@ -59,11 +60,11 @@ public class NamedBranchBuildStrategyImplTest {
     }
 
     @Test
-    public void given__tag_head__when__isAutomaticBuild__then__returns_false() throws Exception {
+    void given__tag_head__when__isAutomaticBuild__then__returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis());
             assertThat(
-                    new NamedBranchBuildStrategyImpl(Collections.<NamedBranchBuildStrategyImpl.NameFilter>singletonList(
+                    new NamedBranchBuildStrategyImpl(Collections.singletonList(
                                     new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false)))
                             .isAutomaticBuild(
                                     new MockSCMSource(c, "dummy"),
@@ -77,12 +78,12 @@ public class NamedBranchBuildStrategyImplTest {
     }
 
     @Test
-    public void given__cr_head__when__isAutomaticBuild__then__returns_false() throws Exception {
+    void given__cr_head__when__isAutomaticBuild__then__returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(
                     SCMHeadOrigin.DEFAULT, 1, "master", ChangeRequestCheckoutStrategy.MERGE, true);
             assertThat(
-                    new NamedBranchBuildStrategyImpl(Collections.<NamedBranchBuildStrategyImpl.NameFilter>singletonList(
+                    new NamedBranchBuildStrategyImpl(Collections.singletonList(
                                     new NamedBranchBuildStrategyImpl.RegexNameFilter("^.*$", false)))
                             .isAutomaticBuild(
                                     new MockSCMSource(c, "dummy"),
@@ -97,11 +98,11 @@ public class NamedBranchBuildStrategyImplTest {
     }
 
     @Test
-    public void given__regular_head__when__non_match__then__isAutomaticBuild_returns_false() throws Exception {
+    void given__regular_head__when__non_match__then__isAutomaticBuild_returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
-                    new NamedBranchBuildStrategyImpl(Collections.<NamedBranchBuildStrategyImpl.NameFilter>singletonList(
+                    new NamedBranchBuildStrategyImpl(Collections.singletonList(
                                     new NamedBranchBuildStrategyImpl.ExactNameFilter("feature/1", false)))
                             .isAutomaticBuild(
                                     new MockSCMSource(c, "dummy"),
@@ -115,11 +116,11 @@ public class NamedBranchBuildStrategyImplTest {
     }
 
     @Test
-    public void given__regular_head__when__non_match_any__then__isAutomaticBuild_returns_false() throws Exception {
+    void given__regular_head__when__non_match_any__then__isAutomaticBuild_returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("feature");
             assertThat(
-                    new NamedBranchBuildStrategyImpl(Arrays.<NamedBranchBuildStrategyImpl.NameFilter>asList(
+                    new NamedBranchBuildStrategyImpl(Arrays.asList(
                                     new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
                                     new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
                                     new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
@@ -137,11 +138,11 @@ public class NamedBranchBuildStrategyImplTest {
     }
 
     @Test
-    public void given__regular_head__when__non_match_first__then__isAutomaticBuild_returns_true() throws Exception {
+    void given__regular_head__when__non_match_first__then__isAutomaticBuild_returns_true() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
-                    new NamedBranchBuildStrategyImpl(Arrays.<NamedBranchBuildStrategyImpl.NameFilter>asList(
+                    new NamedBranchBuildStrategyImpl(Arrays.asList(
                                     new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
                                     new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
                                     new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
@@ -159,11 +160,11 @@ public class NamedBranchBuildStrategyImplTest {
     }
 
     @Test
-    public void given__regular_head__when__non_match_last__then__isAutomaticBuild_returns_true() throws Exception {
+    void given__regular_head__when__non_match_last__then__isAutomaticBuild_returns_true() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("feature/1");
             assertThat(
-                    new NamedBranchBuildStrategyImpl(Arrays.<NamedBranchBuildStrategyImpl.NameFilter>asList(
+                    new NamedBranchBuildStrategyImpl(Arrays.asList(
                                     new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
                                     new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
                                     new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),

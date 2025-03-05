@@ -24,6 +24,7 @@
  */
 package jenkins.branch.buildstrategies.basic.harness;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.BulkChange;
 import hudson.Extension;
 import hudson.model.FreeStyleBuild;
@@ -48,13 +49,15 @@ public class BasicBranchProjectFactory extends BranchProjectFactory<FreeStylePro
         return job;
     }
 
+    @NonNull
     @Override
-    public Branch getBranch(FreeStyleProject project) {
+    public Branch getBranch(@NonNull FreeStyleProject project) {
         return project.getProperty(BasicBranchProperty.class).getBranch();
     }
 
+    @NonNull
     @Override
-    public FreeStyleProject setBranch(FreeStyleProject project, Branch branch) {
+    public FreeStyleProject setBranch(@NonNull FreeStyleProject project, @NonNull Branch branch) {
         BulkChange bc = new BulkChange(project);
         try {
             BasicBranchProperty prop = project.getProperty(BasicBranchProperty.class);
@@ -95,6 +98,7 @@ public class BasicBranchProjectFactory extends BranchProjectFactory<FreeStylePro
             return MultiBranchProject.class.isAssignableFrom(clazz);
         }
 
+        @NonNull
         @Override
         public String getDisplayName() {
             return "BasicBranchProjectFactory";

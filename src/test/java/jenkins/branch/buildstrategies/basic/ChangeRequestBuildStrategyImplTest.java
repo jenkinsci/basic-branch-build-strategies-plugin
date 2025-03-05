@@ -40,11 +40,12 @@ import jenkins.scm.impl.mock.MockSCMRevision;
 import jenkins.scm.impl.mock.MockSCMSource;
 import jenkins.scm.impl.mock.MockTagSCMHead;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ChangeRequestBuildStrategyImplTest {
+class ChangeRequestBuildStrategyImplTest {
+
     @Test
-    public void given__regular_head__when__isAutomaticBuild__then__returns_false() throws Exception {
+    void given__regular_head__when__isAutomaticBuild__then__returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
@@ -61,7 +62,7 @@ public class ChangeRequestBuildStrategyImplTest {
     }
 
     @Test
-    public void given__tag_head__when__isAutomaticBuild__then__returns_false() throws Exception {
+    void given__tag_head__when__isAutomaticBuild__then__returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis());
             assertThat(
@@ -78,7 +79,7 @@ public class ChangeRequestBuildStrategyImplTest {
     }
 
     @Test
-    public void given__cr_head__when__isAutomaticBuild__then__returns_true() throws Exception {
+    void given__cr_head__when__isAutomaticBuild__then__returns_true() {
         try (MockSCMController c = MockSCMController.create()) {
             MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(
                     SCMHeadOrigin.DEFAULT, 1, "master", ChangeRequestCheckoutStrategy.MERGE, true);
@@ -97,7 +98,7 @@ public class ChangeRequestBuildStrategyImplTest {
     }
 
     @Test
-    public void given__cr_head_ignoring_untrusted_changes_when__trusted_revision__then__isAutomaticBuild_returns_true()
+    void given__cr_head_ignoring_untrusted_changes_when__trusted_revision__then__isAutomaticBuild_returns_true()
             throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("dummy", MockRepositoryFlags.TRUST_AWARE);
@@ -120,9 +121,8 @@ public class ChangeRequestBuildStrategyImplTest {
     }
 
     @Test
-    public void
-            given__cr_head_ignoring_untrusted_changes_when__trusted_unavailable__then__isAutomaticBuild_returns_false()
-                    throws Exception {
+    void given__cr_head_ignoring_untrusted_changes_when__trusted_unavailable__then__isAutomaticBuild_returns_false()
+            throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("dummy", MockRepositoryFlags.TRUST_AWARE);
             Integer crNum = c.openChangeRequest("dummy", "master");
@@ -152,9 +152,8 @@ public class ChangeRequestBuildStrategyImplTest {
     }
 
     @Test
-    public void
-            given__cr_head_ignoring_untrusted_changes_when__untrusted_revision__then__isAutomaticBuild_returns_false()
-                    throws Exception {
+    void given__cr_head_ignoring_untrusted_changes_when__untrusted_revision__then__isAutomaticBuild_returns_false()
+            throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("dummy", MockRepositoryFlags.TRUST_AWARE);
             Integer crNum = c.openChangeRequest("dummy", "master", MockChangeRequestFlags.UNTRUSTED);
@@ -176,8 +175,7 @@ public class ChangeRequestBuildStrategyImplTest {
     }
 
     @Test
-    public void given__cr_head_ignoring_target_changes__when__first_build__then__isAutomaticBuild_returns_true()
-            throws Exception {
+    void given__cr_head_ignoring_target_changes__when__first_build__then__isAutomaticBuild_returns_true() {
         try (MockSCMController c = MockSCMController.create()) {
             MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(
                     SCMHeadOrigin.DEFAULT, 1, "master", ChangeRequestCheckoutStrategy.MERGE, true);
@@ -196,8 +194,7 @@ public class ChangeRequestBuildStrategyImplTest {
     }
 
     @Test
-    public void given__cr_head_ignoring_target_changes__when__origin_change__then__isAutomaticBuild_returns_true()
-            throws Exception {
+    void given__cr_head_ignoring_target_changes__when__origin_change__then__isAutomaticBuild_returns_true() {
         try (MockSCMController c = MockSCMController.create()) {
             MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(
                     SCMHeadOrigin.DEFAULT, 1, "master", ChangeRequestCheckoutStrategy.MERGE, true);
@@ -215,8 +212,7 @@ public class ChangeRequestBuildStrategyImplTest {
     }
 
     @Test
-    public void given__cr_head_ignoring_target_changes__when__both_change__then__isAutomaticBuild_returns_true()
-            throws Exception {
+    void given__cr_head_ignoring_target_changes__when__both_change__then__isAutomaticBuild_returns_true() {
         try (MockSCMController c = MockSCMController.create()) {
             MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(
                     SCMHeadOrigin.DEFAULT, 1, "master", ChangeRequestCheckoutStrategy.MERGE, true);
@@ -236,8 +232,7 @@ public class ChangeRequestBuildStrategyImplTest {
     }
 
     @Test
-    public void given__cr_head_ignoring_target_changes__when__target_change__then__isAutomaticBuild_returns_false()
-            throws Exception {
+    void given__cr_head_ignoring_target_changes__when__target_change__then__isAutomaticBuild_returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(
                     SCMHeadOrigin.DEFAULT, 1, "master", ChangeRequestCheckoutStrategy.MERGE, true);
@@ -257,7 +252,7 @@ public class ChangeRequestBuildStrategyImplTest {
     }
 
     @Test
-    public void equalsContract() {
+    void equalsContract() {
         EqualsVerifier.forClass(ChangeRequestBuildStrategyImpl.class)
                 .usingGetClass()
                 .verify();

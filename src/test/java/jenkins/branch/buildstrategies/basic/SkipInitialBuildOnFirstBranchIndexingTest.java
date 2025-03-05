@@ -30,7 +30,6 @@ import static org.hamcrest.Matchers.nullValue;
 
 import hudson.model.FreeStyleProject;
 import java.util.Collections;
-import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchSource;
 import jenkins.branch.buildstrategies.basic.harness.BasicMultiBranchProject;
 import jenkins.scm.api.SCMEvent;
@@ -42,21 +41,27 @@ import jenkins.scm.impl.mock.MockSCMHead;
 import jenkins.scm.impl.mock.MockSCMHeadEvent;
 import jenkins.scm.impl.mock.MockSCMRevision;
 import jenkins.scm.impl.mock.MockSCMSource;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
-public class SkipInitialBuildOnFirstBranchIndexingTest {
+@WithJenkins
+class SkipInitialBuildOnFirstBranchIndexingTest {
 
     /**
      * All tests in this class only create items and do not affect other global configuration, thus we trade test
      * execution time for the restriction on only touching items.
      */
-    @ClassRule
-    public static JenkinsRule j = new JenkinsRule();
+    private static JenkinsRule j;
+
+    @BeforeAll
+    static void setUp(JenkinsRule rule) {
+        j = rule;
+    }
 
     @Test
-    public void given__no__scm__lastSeenRevision__isAutomaticBuild__then__returns_false() throws Exception {
+    void given__no__scm__lastSeenRevision__isAutomaticBuild__then__returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
@@ -73,8 +78,7 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
     }
 
     @Test
-    public void given__scm__lastSeenRevision__but__not__equal__to__currRevision__isAutomaticBuild__then__returns_true()
-            throws Exception {
+    void given__scm__lastSeenRevision__but__not__equal__to__currRevision__isAutomaticBuild__then__returns_true() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
@@ -91,8 +95,7 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
     }
 
     @Test
-    public void given__scm__lastSeenRevision__equal__to__currRevision__isAutomaticBuild__then__returns_false()
-            throws Exception {
+    void given__scm__lastSeenRevision__equal__to__currRevision__isAutomaticBuild__then__returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             MockSCMRevision revision = new MockSCMRevision(head, "dummy");
@@ -104,14 +107,13 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
     }
 
     @Test
-    public void if__first__branch__indexing__isAutomaticBuild__then__returns__true() throws Exception {
+    void if__first__branch__indexing__isAutomaticBuild__then__returns__true() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "project");
             prj.setCriteria(null);
             BranchSource source = new BranchSource(new MockSCMSource(c, "foo", new MockSCMDiscoverBranches()));
-            source.setBuildStrategies(
-                    Collections.<BranchBuildStrategy>singletonList(new SkipInitialBuildOnFirstBranchIndexing()));
+            source.setBuildStrategies(Collections.singletonList(new SkipInitialBuildOnFirstBranchIndexing()));
             prj.getSourcesList().add(source);
             fire(new MockSCMHeadEvent(SCMEvent.Type.CREATED, c, "foo", "master", c.getRevision("foo", "master")));
             FreeStyleProject master = prj.getItem("master");
@@ -131,7 +133,7 @@ public class SkipInitialBuildOnFirstBranchIndexingTest {
     }
 
     @Test
-    public void if__skipInitialBuildOnFirstBranchIndexing__is__disabled__first__branch__indexing__triggers__the__build()
+    void if__skipInitialBuildOnFirstBranchIndexing__is__disabled__first__branch__indexing__triggers__the__build()
             throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");

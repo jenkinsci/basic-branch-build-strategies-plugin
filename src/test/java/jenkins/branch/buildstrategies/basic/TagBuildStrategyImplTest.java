@@ -38,11 +38,12 @@ import jenkins.scm.impl.mock.MockSCMRevision;
 import jenkins.scm.impl.mock.MockSCMSource;
 import jenkins.scm.impl.mock.MockTagSCMHead;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class TagBuildStrategyImplTest {
+class TagBuildStrategyImplTest {
+
     @Test
-    public void given__regular_head__when__isAutomaticBuild__then__returns_false() throws Exception {
+    void given__regular_head__when__isAutomaticBuild__then__returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             TagBuildStrategyImpl strategy = new TagBuildStrategyImpl(null, null);
@@ -59,7 +60,7 @@ public class TagBuildStrategyImplTest {
     }
 
     @Test
-    public void given__tag_head__when__isAutomaticBuild__then__returns_true() throws Exception {
+    void given__tag_head__when__isAutomaticBuild__then__returns_true() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis());
             TagBuildStrategyImpl strategy = new TagBuildStrategyImpl(null, null);
@@ -72,8 +73,7 @@ public class TagBuildStrategyImplTest {
     }
 
     @Test
-    public void given__tag_head__when__tag_newer_than_atMostDays__then__isAutomaticBuild_returns_true()
-            throws Exception {
+    void given__tag_head__when__tag_newer_than_atMostDays__then__isAutomaticBuild_returns_true() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis());
             TagBuildStrategyImpl strategy = new TagBuildStrategyImpl(null, "1");
@@ -86,8 +86,7 @@ public class TagBuildStrategyImplTest {
     }
 
     @Test
-    public void given__tag_head__when__tag_older_than_atMostDays__then__isAutomaticBuild_returns_false()
-            throws Exception {
+    void given__tag_head__when__tag_older_than_atMostDays__then__isAutomaticBuild_returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(2));
             TagBuildStrategyImpl strategy = new TagBuildStrategyImpl(null, "1");
@@ -100,8 +99,7 @@ public class TagBuildStrategyImplTest {
     }
 
     @Test
-    public void given__tag_head__when__tag_newer_than_atLeastDays__then__isAutomaticBuild_returns_false()
-            throws Exception {
+    void given__tag_head__when__tag_newer_than_atLeastDays__then__isAutomaticBuild_returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis());
             TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("1", null);
@@ -114,8 +112,7 @@ public class TagBuildStrategyImplTest {
     }
 
     @Test
-    public void given__tag_head__when__tag_older_than_atLeastDays__then__isAutomaticBuild_returns_true()
-            throws Exception {
+    void given__tag_head__when__tag_older_than_atLeastDays__then__isAutomaticBuild_returns_true() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(2));
             TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("1", null);
@@ -128,8 +125,7 @@ public class TagBuildStrategyImplTest {
     }
 
     @Test
-    public void given__tag_head__when__atLeastDays_invalid_with_atMostDays__then__isAutomaticBuild_returns_false()
-            throws Exception {
+    void given__tag_head__when__atLeastDays_invalid_with_atMostDays__then__isAutomaticBuild_returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             for (int offset = 0; offset <= 4; offset++) {
                 MockSCMHead head =
@@ -145,8 +141,7 @@ public class TagBuildStrategyImplTest {
     }
 
     @Test
-    public void given__tag_head__when__atLeastDays_and_atMostDays__then__isAutomaticBuild_returns_false_before_atLeast()
-            throws Exception {
+    void given__tag_head__when__atLeastDays_and_atMostDays__then__isAutomaticBuild_returns_false_before_atLeast() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis());
             TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("1", "3");
@@ -159,8 +154,7 @@ public class TagBuildStrategyImplTest {
     }
 
     @Test
-    public void given__tag_head__when__atLeastDays_and_atMostDays__then__isAutomaticBuild_returns_true_between()
-            throws Exception {
+    void given__tag_head__when__atLeastDays_and_atMostDays__then__isAutomaticBuild_returns_true_between() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(2));
             TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("1", "3");
@@ -173,8 +167,7 @@ public class TagBuildStrategyImplTest {
     }
 
     @Test
-    public void given__tag_head__when__atLeastDays_and_atMostDays__then__isAutomaticBuild_returns_false_after_atMost()
-            throws Exception {
+    void given__tag_head__when__atLeastDays_and_atMostDays__then__isAutomaticBuild_returns_false_after_atMost() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(4));
             TagBuildStrategyImpl strategy = new TagBuildStrategyImpl("1", "3");
@@ -187,7 +180,7 @@ public class TagBuildStrategyImplTest {
     }
 
     @Test
-    public void given__cr_head__when__isAutomaticBuild__then__returns_false() throws Exception {
+    void given__cr_head__when__isAutomaticBuild__then__returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(
                     SCMHeadOrigin.DEFAULT, 1, "master", ChangeRequestCheckoutStrategy.MERGE, true);
@@ -200,7 +193,7 @@ public class TagBuildStrategyImplTest {
     }
 
     @Test
-    public void equalsContract() {
+    void equalsContract() {
         EqualsVerifier.forClass(TagBuildStrategyImpl.class).usingGetClass().verify();
     }
 }

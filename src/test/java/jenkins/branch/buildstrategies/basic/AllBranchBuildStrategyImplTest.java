@@ -39,11 +39,12 @@ import jenkins.scm.impl.mock.MockSCMHead;
 import jenkins.scm.impl.mock.MockSCMRevision;
 import jenkins.scm.impl.mock.MockSCMSource;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class AllBranchBuildStrategyImplTest {
+class AllBranchBuildStrategyImplTest {
+
     @Test
-    public void given__no_strategies__when__isAutomaticBuild__then__returns_false() throws Exception {
+    void given__no_strategies__when__isAutomaticBuild__then__returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
@@ -60,7 +61,7 @@ public class AllBranchBuildStrategyImplTest {
     }
 
     @Test
-    public void given__true_strategies__when__isAutomaticBuild__then__returns_true() throws Exception {
+    void given__true_strategies__when__isAutomaticBuild__then__returns_true() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
@@ -73,7 +74,7 @@ public class AllBranchBuildStrategyImplTest {
                                                 @NonNull SCMRevision currRevision,
                                                 SCMRevision lastBuiltRevision,
                                                 SCMRevision lastSeenRevision,
-                                                TaskListener taskListener) {
+                                                @NonNull TaskListener taskListener) {
                                             return true;
                                         }
                                     },
@@ -85,7 +86,7 @@ public class AllBranchBuildStrategyImplTest {
                                                 @NonNull SCMRevision currRevision,
                                                 SCMRevision lastBuiltRevision,
                                                 SCMRevision lastSeenRevision,
-                                                TaskListener taskListener) {
+                                                @NonNull TaskListener taskListener) {
                                             return true;
                                         }
                                     }))
@@ -101,7 +102,7 @@ public class AllBranchBuildStrategyImplTest {
     }
 
     @Test
-    public void given__false_strategies__when__isAutomaticBuild__then__returns_false() throws Exception {
+    void given__false_strategies__when__isAutomaticBuild__then__returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
@@ -114,7 +115,7 @@ public class AllBranchBuildStrategyImplTest {
                                                 @NonNull SCMRevision currRevision,
                                                 SCMRevision lastBuiltRevision,
                                                 SCMRevision lastSeenRevision,
-                                                TaskListener taskListener) {
+                                                @NonNull TaskListener taskListener) {
                                             return false;
                                         }
                                     },
@@ -126,7 +127,7 @@ public class AllBranchBuildStrategyImplTest {
                                                 @NonNull SCMRevision currRevision,
                                                 SCMRevision lastBuiltRevision,
                                                 SCMRevision lastSeenRevision,
-                                                TaskListener taskListener) {
+                                                @NonNull TaskListener taskListener) {
                                             return false;
                                         }
                                     }))
@@ -142,8 +143,7 @@ public class AllBranchBuildStrategyImplTest {
     }
 
     @Test
-    public void given__false_and_true_strategies__when__isAutomaticBuild__then__returns_false_with_short_circuit()
-            throws Exception {
+    void given__false_and_true_strategies__when__isAutomaticBuild__then__returns_false_with_short_circuit() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
@@ -156,7 +156,7 @@ public class AllBranchBuildStrategyImplTest {
                                                 @NonNull SCMRevision currRevision,
                                                 SCMRevision lastBuiltRevision,
                                                 SCMRevision lastSeenRevision,
-                                                TaskListener taskListener) {
+                                                @NonNull TaskListener taskListener) {
                                             return false;
                                         }
                                     },
@@ -168,7 +168,7 @@ public class AllBranchBuildStrategyImplTest {
                                                 @NonNull SCMRevision currRevision,
                                                 SCMRevision lastBuiltRevision,
                                                 SCMRevision lastSeenRevision,
-                                                TaskListener taskListener) {
+                                                @NonNull TaskListener taskListener) {
                                             return true;
                                         }
                                     }))
@@ -184,7 +184,7 @@ public class AllBranchBuildStrategyImplTest {
     }
 
     @Test
-    public void equalsContract() {
+    void equalsContract() {
         EqualsVerifier.forClass(AllBranchBuildStrategyImpl.class)
                 .usingGetClass()
                 .verify();
