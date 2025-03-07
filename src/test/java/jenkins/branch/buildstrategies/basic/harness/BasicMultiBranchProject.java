@@ -47,6 +47,7 @@ public class BasicMultiBranchProject extends MultiBranchProject<FreeStyleProject
         super(parent, name);
     }
 
+    @NonNull
     @Override
     protected BranchProjectFactory<FreeStyleProject, FreeStyleBuild> newProjectFactory() {
         return new BasicBranchProjectFactory();
@@ -74,6 +75,7 @@ public class BasicMultiBranchProject extends MultiBranchProject<FreeStyleProject
     @Extension
     public static class DescriptorImpl extends MultiBranchProjectDescriptor {
 
+        @NonNull
         @Override
         public String getDisplayName() {
             return "BasicMultiBranchProject";

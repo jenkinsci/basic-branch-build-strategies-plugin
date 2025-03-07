@@ -26,12 +26,9 @@ package jenkins.branch.buildstrategies.basic;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 
-import hudson.model.Computer;
-import hudson.model.Executor;
 import hudson.model.TopLevelItem;
 import java.util.Arrays;
 import java.util.Collections;
-import jenkins.branch.BranchBuildStrategy;
 import jenkins.branch.BranchSource;
 import jenkins.branch.buildstrategies.basic.harness.BasicMultiBranchProject;
 import jenkins.scm.impl.mock.MockSCMController;
@@ -39,40 +36,34 @@ import jenkins.scm.impl.mock.MockSCMDiscoverBranches;
 import jenkins.scm.impl.mock.MockSCMDiscoverChangeRequests;
 import jenkins.scm.impl.mock.MockSCMDiscoverTags;
 import jenkins.scm.impl.mock.MockSCMSource;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
-public class FormBindingTest {
+@WithJenkins
+class FormBindingTest {
     /**
      * All tests in this class only create items and do not affect other global configuration, thus we trade test
      * execution time for the restriction on only touching items.
      */
-    @ClassRule
-    public static JenkinsRule j = new JenkinsRule();
+    private static JenkinsRule j;
 
-    @Before
-    public void cleanOutAllItems() throws Exception {
+    @BeforeAll
+    static void setUp(JenkinsRule rule) {
+        j = rule;
+    }
+
+    @BeforeEach
+    void cleanOutAllItems() throws Exception {
         for (TopLevelItem i : j.getInstance().getItems()) {
             i.delete();
         }
-        for (Computer comp : j.jenkins.getComputers()) {
-            for (Executor e : comp.getExecutors()) {
-                if (e.getCauseOfDeath() != null) {
-                    e.doYank();
-                }
-            }
-            for (Executor e : comp.getOneOffExecutors()) {
-                if (e.getCauseOfDeath() != null) {
-                    e.doYank();
-                }
-            }
-        }
     }
 
     @Test
-    public void branch() throws Exception {
+    void branch() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
@@ -83,16 +74,15 @@ public class FormBindingTest {
                     new MockSCMDiscoverBranches(),
                     new MockSCMDiscoverTags(),
                     new MockSCMDiscoverChangeRequests()));
-            source.setBuildStrategies(Collections.<BranchBuildStrategy>singletonList(new BranchBuildStrategyImpl()));
+            source.setBuildStrategies(Collections.singletonList(new BranchBuildStrategyImpl()));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
-                    new BranchBuildStrategyImpl()));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains(new BranchBuildStrategyImpl()));
         }
     }
 
     @Test
-    public void namedBranch() throws Exception {
+    void namedBranch() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
@@ -103,16 +93,16 @@ public class FormBindingTest {
                     new MockSCMDiscoverBranches(),
                     new MockSCMDiscoverTags(),
                     new MockSCMDiscoverChangeRequests()));
-            source.setBuildStrategies(
-                    Collections.<BranchBuildStrategy>singletonList(new NamedBranchBuildStrategyImpl(Arrays.asList(
-                            new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
-                            new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
-                            new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
-                            new NamedBranchBuildStrategyImpl.WildcardsNameFilter("feature/*", "feature", false)))));
+            source.setBuildStrategies(Collections.singletonList(new NamedBranchBuildStrategyImpl(Arrays.asList(
+                    new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
+                    new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
+                    new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
+                    new NamedBranchBuildStrategyImpl.WildcardsNameFilter("feature/*", "feature", false)))));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
-                    new NamedBranchBuildStrategyImpl(Arrays.asList(
+            assertThat(
+                    prj.getSources().get(0).getBuildStrategies(),
+                    contains(new NamedBranchBuildStrategyImpl(Arrays.asList(
                             new NamedBranchBuildStrategyImpl.ExactNameFilter("master", false),
                             new NamedBranchBuildStrategyImpl.ExactNameFilter("production", false),
                             new NamedBranchBuildStrategyImpl.RegexNameFilter("^staging-.*$", false),
@@ -121,7 +111,7 @@ public class FormBindingTest {
     }
 
     @Test
-    public void changeRequest1() throws Exception {
+    void changeRequest1() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
@@ -132,17 +122,17 @@ public class FormBindingTest {
                     new MockSCMDiscoverBranches(),
                     new MockSCMDiscoverTags(),
                     new MockSCMDiscoverChangeRequests()));
-            source.setBuildStrategies(
-                    Collections.<BranchBuildStrategy>singletonList(new ChangeRequestBuildStrategyImpl(false, false)));
+            source.setBuildStrategies(Collections.singletonList(new ChangeRequestBuildStrategyImpl(false, false)));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
-                    new ChangeRequestBuildStrategyImpl(false, false)));
+            assertThat(
+                    prj.getSources().get(0).getBuildStrategies(),
+                    contains(new ChangeRequestBuildStrategyImpl(false, false)));
         }
     }
 
     @Test
-    public void changeRequest2() throws Exception {
+    void changeRequest2() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
@@ -153,17 +143,17 @@ public class FormBindingTest {
                     new MockSCMDiscoverBranches(),
                     new MockSCMDiscoverTags(),
                     new MockSCMDiscoverChangeRequests()));
-            source.setBuildStrategies(
-                    Collections.<BranchBuildStrategy>singletonList(new ChangeRequestBuildStrategyImpl(true, false)));
+            source.setBuildStrategies(Collections.singletonList(new ChangeRequestBuildStrategyImpl(true, false)));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
-                    new ChangeRequestBuildStrategyImpl(true, false)));
+            assertThat(
+                    prj.getSources().get(0).getBuildStrategies(),
+                    contains(new ChangeRequestBuildStrategyImpl(true, false)));
         }
     }
 
     @Test
-    public void tag____() throws Exception {
+    void tag____() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
@@ -174,16 +164,15 @@ public class FormBindingTest {
                     new MockSCMDiscoverBranches(),
                     new MockSCMDiscoverTags(),
                     new MockSCMDiscoverChangeRequests()));
-            source.setBuildStrategies(Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("", "")));
+            source.setBuildStrategies(Collections.singletonList(new TagBuildStrategyImpl("", "")));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
-                    new TagBuildStrategyImpl("", "")));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains(new TagBuildStrategyImpl("", "")));
         }
     }
 
     @Test
-    public void tag_0__() throws Exception {
+    void tag_0__() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
@@ -194,17 +183,15 @@ public class FormBindingTest {
                     new MockSCMDiscoverBranches(),
                     new MockSCMDiscoverTags(),
                     new MockSCMDiscoverChangeRequests()));
-            source.setBuildStrategies(
-                    Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("0", "")));
+            source.setBuildStrategies(Collections.singletonList(new TagBuildStrategyImpl("0", "")));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
-                    new TagBuildStrategyImpl("0", "")));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains(new TagBuildStrategyImpl("0", "")));
         }
     }
 
     @Test
-    public void tagp1__() throws Exception {
+    void tagp1__() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
@@ -215,17 +202,15 @@ public class FormBindingTest {
                     new MockSCMDiscoverBranches(),
                     new MockSCMDiscoverTags(),
                     new MockSCMDiscoverChangeRequests()));
-            source.setBuildStrategies(
-                    Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("1", "")));
+            source.setBuildStrategies(Collections.singletonList(new TagBuildStrategyImpl("1", "")));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
-                    new TagBuildStrategyImpl("1", "")));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains(new TagBuildStrategyImpl("1", "")));
         }
     }
 
     @Test
-    public void tagn1__() throws Exception {
+    void tagn1__() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
@@ -236,17 +221,15 @@ public class FormBindingTest {
                     new MockSCMDiscoverBranches(),
                     new MockSCMDiscoverTags(),
                     new MockSCMDiscoverChangeRequests()));
-            source.setBuildStrategies(
-                    Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("-1", "")));
+            source.setBuildStrategies(Collections.singletonList(new TagBuildStrategyImpl("-1", "")));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
-                    new TagBuildStrategyImpl("", "")));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains(new TagBuildStrategyImpl("", "")));
         }
     }
 
     @Test
-    public void tag___0() throws Exception {
+    void tag___0() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
@@ -257,17 +240,15 @@ public class FormBindingTest {
                     new MockSCMDiscoverBranches(),
                     new MockSCMDiscoverTags(),
                     new MockSCMDiscoverChangeRequests()));
-            source.setBuildStrategies(
-                    Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("", "0")));
+            source.setBuildStrategies(Collections.singletonList(new TagBuildStrategyImpl("", "0")));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
-                    new TagBuildStrategyImpl("", "0")));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains(new TagBuildStrategyImpl("", "0")));
         }
     }
 
     @Test
-    public void tag__p1() throws Exception {
+    void tag__p1() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
@@ -278,17 +259,15 @@ public class FormBindingTest {
                     new MockSCMDiscoverBranches(),
                     new MockSCMDiscoverTags(),
                     new MockSCMDiscoverChangeRequests()));
-            source.setBuildStrategies(
-                    Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("", "1")));
+            source.setBuildStrategies(Collections.singletonList(new TagBuildStrategyImpl("", "1")));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
-                    new TagBuildStrategyImpl("", "1")));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains(new TagBuildStrategyImpl("", "1")));
         }
     }
 
     @Test
-    public void tag__n1() throws Exception {
+    void tag__n1() throws Exception {
         try (MockSCMController c = MockSCMController.create()) {
             c.createRepository("foo");
             BasicMultiBranchProject prj = j.jenkins.createProject(BasicMultiBranchProject.class, "foo");
@@ -299,12 +278,10 @@ public class FormBindingTest {
                     new MockSCMDiscoverBranches(),
                     new MockSCMDiscoverTags(),
                     new MockSCMDiscoverChangeRequests()));
-            source.setBuildStrategies(
-                    Collections.<BranchBuildStrategy>singletonList(new TagBuildStrategyImpl("", "-1")));
+            source.setBuildStrategies(Collections.singletonList(new TagBuildStrategyImpl("", "-1")));
             prj.getSourcesList().add(source);
             j.configRoundtrip(prj);
-            assertThat(prj.getSources().get(0).getBuildStrategies(), contains((BranchBuildStrategy)
-                    new TagBuildStrategyImpl("", "")));
+            assertThat(prj.getSources().get(0).getBuildStrategies(), contains(new TagBuildStrategyImpl("", "")));
         }
     }
 }

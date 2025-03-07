@@ -36,11 +36,12 @@ import jenkins.scm.impl.mock.MockSCMRevision;
 import jenkins.scm.impl.mock.MockSCMSource;
 import jenkins.scm.impl.mock.MockTagSCMHead;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class BranchBuildStrategyImplTest {
+class BranchBuildStrategyImplTest {
+
     @Test
-    public void given__regular_head__when__isAutomaticBuild__then__returns_true() throws Exception {
+    void given__regular_head__when__isAutomaticBuild__then__returns_true() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockSCMHead("master");
             assertThat(
@@ -57,7 +58,7 @@ public class BranchBuildStrategyImplTest {
     }
 
     @Test
-    public void given__tag_head__when__isAutomaticBuild__then__returns_false() throws Exception {
+    void given__tag_head__when__isAutomaticBuild__then__returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockSCMHead head = new MockTagSCMHead("master", System.currentTimeMillis());
             assertThat(
@@ -74,7 +75,7 @@ public class BranchBuildStrategyImplTest {
     }
 
     @Test
-    public void given__cr_head__when__isAutomaticBuild__then__returns_false() throws Exception {
+    void given__cr_head__when__isAutomaticBuild__then__returns_false() {
         try (MockSCMController c = MockSCMController.create()) {
             MockChangeRequestSCMHead head = new MockChangeRequestSCMHead(
                     SCMHeadOrigin.DEFAULT, 1, "master", ChangeRequestCheckoutStrategy.MERGE, true);
@@ -93,7 +94,7 @@ public class BranchBuildStrategyImplTest {
     }
 
     @Test
-    public void equalsContract() {
+    void equalsContract() {
         EqualsVerifier.forClass(BranchBuildStrategyImpl.class).usingGetClass().verify();
     }
 }
